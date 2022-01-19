@@ -120,6 +120,34 @@ function OnStopOrder(order)
     message('1 bit =' .. tostring(checkBit(order.flags, 1)))
     message('2 bit =' .. tostring(checkBit(order.flags, 2)))
     message('3 bit =' .. tostring(checkBit(order.flags, 3)))
+    message('5 bit =' .. tostring(checkBit(order.flags, 5)))
+    message('6 bit =' .. tostring(checkBit(order.flags, 6)))
+    message('8 bit =' .. tostring(checkBit(order.flags, 8)))
+    message('9 bit =' .. tostring(checkBit(order.flags, 9)))
+    message('10 bit =' .. tostring(checkBit(order.flags, 10)))
+    message('11 bit =' .. tostring(checkBit(order.flags, 11)))
+    message('12 bit =' .. tostring(checkBit(order.flags, 12)))
+    message('13 bit =' .. tostring(checkBit(order.flags, 13)))
+    message('15 bit =' .. tostring(checkBit(order.flags, 15)))
+
+    -- for k, v in pairs(order) do
+    --     if type(v) ~= 'table' then
+    --         if k == 'trans_id' or k == 'flags' then
+    --             message(k .. " =" .. v)
+    --         end
+    --     end
+    -- end
+    
+    message('<--------------------- OnStopOrder')
+end
+
+function OnOrder(order)
+    message('OnOrder --------------------->')
+
+    message('0 bit =' .. tostring(checkBit(order.flags, 0)))
+    message('1 bit =' .. tostring(checkBit(order.flags, 1)))
+    message('2 bit =' .. tostring(checkBit(order.flags, 2)))
+    message('3 bit =' .. tostring(checkBit(order.flags, 3)))
     message('4 bit =' .. tostring(checkBit(order.flags, 4)))
     message('5 bit =' .. tostring(checkBit(order.flags, 5)))
     message('6 bit =' .. tostring(checkBit(order.flags, 6)))
@@ -137,12 +165,20 @@ function OnStopOrder(order)
     --     end
     -- end
     
-    message('<--------------------- OnStopOrder')
+    message('<--------------------- OnOrder')
 end
+
 function OnTrade(trade)
-    -- message('**OnTrade --------------------->')
+    message('**OnTrade --------------------->')
 
-
+    message('0 bit =' .. tostring(checkBit(order.flags, 0)))
+    message('2 bit =' .. tostring(checkBit(order.flags, 2)))
+    message('3 bit =' .. tostring(checkBit(order.flags, 3)))
+    message('4 bit =' .. tostring(checkBit(order.flags, 4)))
+    message('5 bit =' .. tostring(checkBit(order.flags, 5)))
+    message('6 bit =' .. tostring(checkBit(order.flags, 6)))
+    message('7 bit =' .. tostring(checkBit(order.flags, 7)))
+    message('8 bit =' .. tostring(checkBit(order.flags, 8)))
 
     -- for k, v in pairs(trade) do
     --     if type(v) ~= 'table' then
@@ -152,7 +188,7 @@ function OnTrade(trade)
     --     end
     -- end
 
-    -- message('<--------------------- OnTrade**')
+    message('<--------------------- OnTrade**')
 end
 -- function OnOrder()
 --     message('OnOrder')
@@ -166,19 +202,19 @@ function checkBit(flags, _bit)
     if _bit == 0 then _bit = 0x1
     elseif _bit == 1 then _bit = 0x2
     elseif _bit == 2 then _bit = 0x4
-    elseif _bit == 3 then _bit  = 0x8
+    elseif _bit == 3 then _bit = 0x8
     elseif _bit == 4 then _bit = 0x10
     elseif _bit == 5 then _bit = 0x20
     elseif _bit == 6 then _bit = 0x40
-    elseif _bit == 7 then _bit  = 0x80
+    elseif _bit == 7 then _bit = 0x80
     elseif _bit == 8 then _bit = 0x100
     elseif _bit == 9 then _bit = 0x200
     elseif _bit == 10 then _bit = 0x400
     elseif _bit == 11 then _bit = 0x800
-    elseif _bit == 12 then _bit  = 0x1000
+    elseif _bit == 12 then _bit = 0x1000
     elseif _bit == 13 then _bit = 0x2000
-    elseif _bit == 14 then _bit  = 0x4000
-    elseif _bit == 15 then _bit  = 0x8000
+    elseif _bit == 14 then _bit = 0x4000
+    elseif _bit == 15 then _bit = 0x8000
     elseif _bit == 16 then _bit = 0x10000
     elseif _bit == 17 then _bit = 0x20000
     elseif _bit == 18 then _bit = 0x40000
