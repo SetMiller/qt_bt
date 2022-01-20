@@ -16,8 +16,7 @@ dofile(getScriptPath().."\\state.lua")
 --
 function OnInit()
     stack_init()
-
-
+    MAIN_QUEUE = {}
     -- message("init STATE_DATA.depoLimit =" .. STATE_DATA.depoLimit)
 end
 
@@ -44,18 +43,33 @@ function main()
     --TODO: обернуть в функцию проверки правильности введенных данных из Options
     if TRADE_TYPE ~= 'long' and TRADE_TYPE ~= 'short' then error(("check TRADE_TYPE in user -> u_Options -> (must be 'long or short', got '%s')"):format(TRADE_TYPE), 2) end
 
+    f = io.open(getScriptPath()..'\\STOP_INFO.txt','w') 
 
     while STATE_KEYS.isRun do
         
         sleep(100)
         -- if counter > 30000 then is_run = false end
+        if #MAIN_QUEUE > 0 then 
+            f:write("QUEUE size " .. tostring(#MAIN_QUEUE) .. '\n')
+            f:flush()
+            -- message("QUEUE size " .. tostring(#MAIN_QUEUE))
+            ProcessingCallback(MAIN_QUEUE[1])
+            table.sremove(MAIN_QUEUE, 1)
 
-        if STATE_KEYS.update then
+            f:write("QUEUE size left " .. tostring(#MAIN_QUEUE) .. '\n')
+            f:flush()
             
-            stack_update()
-            
-            STATE_KEYS.update = false
+        else
+
+
+            if STATE_KEYS.update then
+                
+                stack_update()
+                
+                STATE_KEYS.update = false
+            end
         end
+
         
         -- counter = counter + 1
         -- message(tostring(STATE_DATA.depoLimit))
@@ -82,7 +96,7 @@ end
 -- Функция обратного вызова для завершения работы привода
 --
 function OnStop()                                                         
-
+    f:close()
 end
 
 function OnFuturesLimitChange(fut_limit)
@@ -114,114 +128,31 @@ function OnTransReply()
 end
 
 function OnStopOrder(order)
-    message('OnStopOrder --------------------->')
-
-    message('0 bit =' .. tostring(checkBit(order.flags, 0)))
-    message('1 bit =' .. tostring(checkBit(order.flags, 1)))
-    message('2 bit =' .. tostring(checkBit(order.flags, 2)))
-    message('3 bit =' .. tostring(checkBit(order.flags, 3)))
-    message('5 bit =' .. tostring(checkBit(order.flags, 5)))
-    message('6 bit =' .. tostring(checkBit(order.flags, 6)))
-    message('8 bit =' .. tostring(checkBit(order.flags, 8)))
-    message('9 bit =' .. tostring(checkBit(order.flags, 9)))
-    message('10 bit =' .. tostring(checkBit(order.flags, 10)))
-    message('11 bit =' .. tostring(checkBit(order.flags, 11)))
-    message('12 bit =' .. tostring(checkBit(order.flags, 12)))
-    message('13 bit =' .. tostring(checkBit(order.flags, 13)))
-    message('15 bit =' .. tostring(checkBit(order.flags, 15)))
-
-    -- for k, v in pairs(order) do
-    --     if type(v) ~= 'table' then
-    --         if k == 'trans_id' or k == 'flags' then
-    --             message(k .. " =" .. v)
-    --         end
-    --     end
-    -- end
+    table.sinsert(MAIN_QUEUE, {callback = "OnStopOrder", order = order, enum = enum_OnStopOrder})
+    -- message('OnStopOrder --------------------->')
     
-    message('<--------------------- OnStopOrder')
+    
+    -- message(ReadData(order) .. '\n' .. ReadBitData(order, enum_OnStopOrder))
+    
+    
+    -- message('<--------------------- OnStopOrder')
 end
 
 function OnOrder(order)
-    message('OnOrder --------------------->')
-
-    message('0 bit =' .. tostring(checkBit(order.flags, 0)))
-    message('1 bit =' .. tostring(checkBit(order.flags, 1)))
-    message('2 bit =' .. tostring(checkBit(order.flags, 2)))
-    message('3 bit =' .. tostring(checkBit(order.flags, 3)))
-    message('4 bit =' .. tostring(checkBit(order.flags, 4)))
-    message('5 bit =' .. tostring(checkBit(order.flags, 5)))
-    message('6 bit =' .. tostring(checkBit(order.flags, 6)))
-    message('7 bit =' .. tostring(checkBit(order.flags, 7)))
-    message('8 bit =' .. tostring(checkBit(order.flags, 8)))
-    message('9 bit =' .. tostring(checkBit(order.flags, 9)))
-    message('10 bit =' .. tostring(checkBit(order.flags, 10)))
-    message('20 bit =' .. tostring(checkBit(order.flags, 20)))
-
-    -- for k, v in pairs(order) do
-    --     if type(v) ~= 'table' then
-    --         if k == 'trans_id' or k == 'flags' then
-    --             message(k .. " =" .. v)
-    --         end
-    --     end
-    -- end
+    -- table.sinsert(MAIN_QUEUE, {callback = "OnOrder", order = order, enum = enum_OnOrder})
+    -- message('OnOrder --------------------->')
     
-    message('<--------------------- OnOrder')
+    -- message(ReadData(order) .. '\n' .. ReadBitData(order, enum_OnOrder))
+    
+    -- message('<--------------------- OnOrder')
 end
 
-function OnTrade(trade)
-    message('**OnTrade --------------------->')
+function OnTrade(order)
+    -- table.sinsert(MAIN_QUEUE, {callback = "OnTrade", order = order, enum = enum_OnTrade})
+    -- message('**OnTrade --------------------->')
 
-    message('0 bit =' .. tostring(checkBit(order.flags, 0)))
-    message('2 bit =' .. tostring(checkBit(order.flags, 2)))
-    message('3 bit =' .. tostring(checkBit(order.flags, 3)))
-    message('4 bit =' .. tostring(checkBit(order.flags, 4)))
-    message('5 bit =' .. tostring(checkBit(order.flags, 5)))
-    message('6 bit =' .. tostring(checkBit(order.flags, 6)))
-    message('7 bit =' .. tostring(checkBit(order.flags, 7)))
-    message('8 bit =' .. tostring(checkBit(order.flags, 8)))
+    -- message(ReadData(order) .. '\n' .. ReadBitData(order, enum_OnTrade))
 
-    -- for k, v in pairs(trade) do
-    --     if type(v) ~= 'table' then
-    --         if k == 'trans_id' or k == 'flags' then
-    --             message(k .. " =" .. v)
-    --         end
-    --     end
-    -- end
-
-    message('<--------------------- OnTrade**')
+    -- message('<--------------------- OnTrade**')
 end
--- function OnOrder()
---     message('OnOrder')
--- end
 
-function checkBit(flags, _bit)
-    -- Проверяет, что переданные аргументы являются числами
-    if type(flags) ~= "number" then error(Private.logicType .. " Error!!! Checkbit: 1-st argument is not a number!") end
-    if type(_bit) ~= "number" then error(Private.logicType .. " Error!!! Checkbit: 2-nd argument is not a number!") end
- 
-    if _bit == 0 then _bit = 0x1
-    elseif _bit == 1 then _bit = 0x2
-    elseif _bit == 2 then _bit = 0x4
-    elseif _bit == 3 then _bit = 0x8
-    elseif _bit == 4 then _bit = 0x10
-    elseif _bit == 5 then _bit = 0x20
-    elseif _bit == 6 then _bit = 0x40
-    elseif _bit == 7 then _bit = 0x80
-    elseif _bit == 8 then _bit = 0x100
-    elseif _bit == 9 then _bit = 0x200
-    elseif _bit == 10 then _bit = 0x400
-    elseif _bit == 11 then _bit = 0x800
-    elseif _bit == 12 then _bit = 0x1000
-    elseif _bit == 13 then _bit = 0x2000
-    elseif _bit == 14 then _bit = 0x4000
-    elseif _bit == 15 then _bit = 0x8000
-    elseif _bit == 16 then _bit = 0x10000
-    elseif _bit == 17 then _bit = 0x20000
-    elseif _bit == 18 then _bit = 0x40000
-    elseif _bit == 19 then _bit = 0x80000
-    elseif _bit == 20 then _bit = 0x100000
-    end
- 
-    if bit.band(flags,_bit ) == _bit then return true
-    else return false end
- end
