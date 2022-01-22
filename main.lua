@@ -18,6 +18,9 @@ function OnInit()
     stack_init()
     MAIN_QUEUE = {}
     -- message("init STATE_DATA.depoLimit =" .. STATE_DATA.depoLimit)
+
+    
+
 end
 
 -- function OnParam(class_code, sec_code)
@@ -57,6 +60,7 @@ function main()
             table.sremove(MAIN_QUEUE, 1)
 
             f:write("QUEUE size left " .. tostring(#MAIN_QUEUE) .. '\n')
+            f:write('\n')
             f:flush()
             
         else
@@ -139,7 +143,7 @@ function OnStopOrder(order)
 end
 
 function OnOrder(order)
-    -- table.sinsert(MAIN_QUEUE, {callback = "OnOrder", order = order, enum = enum_OnOrder})
+    table.sinsert(MAIN_QUEUE, {callback = "OnOrder", order = order, enum = enum_OnOrder})
     -- message('OnOrder --------------------->')
     
     -- message(ReadData(order) .. '\n' .. ReadBitData(order, enum_OnOrder))
@@ -148,7 +152,7 @@ function OnOrder(order)
 end
 
 function OnTrade(order)
-    -- table.sinsert(MAIN_QUEUE, {callback = "OnTrade", order = order, enum = enum_OnTrade})
+    table.sinsert(MAIN_QUEUE, {callback = "OnTrade", order = order, enum = enum_OnTrade})
     -- message('**OnTrade --------------------->')
 
     -- message(ReadData(order) .. '\n' .. ReadBitData(order, enum_OnTrade))
@@ -156,3 +160,15 @@ function OnTrade(order)
     -- message('<--------------------- OnTrade**')
 end
 
+
+
+-- первый стоп - смотри флаг, если активный, то записываем id и номер заявки
+-- в конце проверяем заполнение данных и ставим флаг что стоп активен и установлен
+-- если заполнены данные только по стопу (флаг активен)
+
+-- стоп активирован - смотрим, если наши данные совпадают с активированным стопом
+-- и у активированного стопа новый флаг, то меняем флаг
+-- так же заполняем данные по OnOrder и OnTrade
+-- если все данные заполнены и флаги совпадают с маской, то обновляем данные по позиции и ДЕПО
+-- старые данные по tradePossStruct обнуляем (можно созранять в переменную и обнулять ее)
+-- при флаге активной стоп заявки, создавать переменную и заполнять ее данными

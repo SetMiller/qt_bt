@@ -125,4 +125,7 @@ function ProcessingCallback(queue)
     ReadBitData_W(queue.order, queue.enum)
     f:write(string.format("Callback processing %s are finished\n", queue.callback))
     f:flush()
+
+
+    -- тут должна происходить вся магия
 end
