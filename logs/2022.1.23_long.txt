@@ -88,3 +88,531 @@ order_num = 0
 
 ONSTOP_QUEUE size left 0
 
+@@@@@@@@@@ 01/23/22 | 20:45:25 @@@@@@@@@@
+
+ONSTOP_QUEUE size 1
+condition: 5;
+flags: 25;
+order_num: 1672380;
+stopflags: 32;
+trans_id: 1000173;
+class_code: SPBFUT;
+active_from_time: 0;
+alltrade_num: 0;
+active_to_time: 0;
+client_code: SPBFUTJRk1N;
+ordernum: 1672380;
+canceled_uid: 0;
+price: 78608.0;
+orderdate: 20220123;
+stop_order_type: 1;
+balance: 2.0;
+qty: 2.0;
+firmid: SPBFUT;
+expiry: 20220123;
+condition_price: 78529.0;
+condition_seccode: SiH2;
+brokerref: long open;
+linkedorder: 0;
+account: SPBFUTJRk1N;
+spread: 0.0;
+filled_qty: 0.0;
+condition_class_code: SPBFUT;
+condition_sec_code: SiH2;
+sec_code: SiH2;
+co_order_num: 0;
+withdraw_time: 0;
+uid: 77133;
+condition_price2: 0.0;
+seccode: SiH2;
+offset: 0.0;
+ordertime: 204525;
+co_order_price: 0.0;
+
+trans_id = 1000173
+order_num = 1672380
+
+ONSTOP_QUEUE size left 0
+
+ONSTOP_QUEUE size 1
+condition: 5;
+flags: 26;
+order_num: 1672380;
+stopflags: 32;
+trans_id: 1000173;
+class_code: SPBFUT;
+active_from_time: 0;
+alltrade_num: 0;
+active_to_time: 0;
+client_code: SPBFUTJRk1N;
+ordernum: 1672380;
+canceled_uid: 77133;
+price: 78608.0;
+orderdate: 20220123;
+stop_order_type: 1;
+balance: 2.0;
+qty: 2.0;
+firmid: SPBFUT;
+expiry: 20220123;
+condition_price: 78529.0;
+condition_seccode: SiH2;
+brokerref: long open;
+linkedorder: 0;
+account: SPBFUTJRk1N;
+spread: 0.0;
+filled_qty: 0.0;
+condition_class_code: SPBFUT;
+condition_sec_code: SiH2;
+sec_code: SiH2;
+co_order_num: 0;
+withdraw_time: 204525;
+uid: 77133;
+condition_price2: 0.0;
+seccode: SiH2;
+offset: 0.0;
+ordertime: 204525;
+co_order_price: 0.0;
+
+trans_id = 0
+order_num = 0
+
+ONSTOP_QUEUE size left 0
+
+@@@@@@@@@@ 01/23/22 | 20:46:46 @@@@@@@@@@
+
+ONSTOP_QUEUE size 1
+co_order_num: 0;
+class_code: SPBFUT;
+stopflags: 32;
+canceled_uid: 0;
+ordernum: 1672381;
+account: SPBFUTJRk1N;
+condition_class_code: SPBFUT;
+order_num: 1672381;
+spread: 0.0;
+condition: 5;
+stop_order_type: 1;
+ordertime: 204647;
+price: 78608.0;
+withdraw_time: 0;
+active_to_time: 0;
+co_order_price: 0.0;
+condition_price2: 0.0;
+firmid: SPBFUT;
+filled_qty: 0.0;
+brokerref: long open;
+condition_sec_code: SiH2;
+condition_seccode: SiH2;
+sec_code: SiH2;
+condition_price: 78529.0;
+active_from_time: 0;
+seccode: SiH2;
+client_code: SPBFUTJRk1N;
+uid: 77133;
+linkedorder: 0;
+offset: 0.0;
+expiry: 20220123;
+orderdate: 20220123;
+flags: 25;
+alltrade_num: 0;
+qty: 2.0;
+trans_id: 1000175;
+balance: 2.0;
+
+trans_id = 1000175
+order_num = 1672381
+
+ONSTOP_QUEUE size left 0
+
+ONSTOP_QUEUE size 1
+co_order_num: 0;
+class_code: SPBFUT;
+stopflags: 32;
+canceled_uid: 77133;
+ordernum: 1672381;
+account: SPBFUTJRk1N;
+condition_class_code: SPBFUT;
+order_num: 1672381;
+spread: 0.0;
+condition: 5;
+stop_order_type: 1;
+ordertime: 204647;
+price: 78608.0;
+withdraw_time: 204647;
+active_to_time: 0;
+co_order_price: 0.0;
+condition_price2: 0.0;
+firmid: SPBFUT;
+filled_qty: 0.0;
+brokerref: long open;
+condition_sec_code: SiH2;
+condition_seccode: SiH2;
+sec_code: SiH2;
+condition_price: 78529.0;
+active_from_time: 0;
+seccode: SiH2;
+client_code: SPBFUTJRk1N;
+uid: 77133;
+linkedorder: 0;
+offset: 0.0;
+expiry: 20220123;
+orderdate: 20220123;
+flags: 26;
+alltrade_num: 0;
+qty: 2.0;
+trans_id: 1000175;
+balance: 2.0;
+
+trans_id = 0
+order_num = 0
+
+ONSTOP_QUEUE size left 0
+
+@@@@@@@@@@ 01/23/22 | 22:11:38 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:11:57 @@@@@@@@@@
+
+ONSTOP_QUEUE size 1
+flags: 25;
+condition_seccode: SiH2;
+expiry: 20220123;
+account: SPBFUTJRk1N;
+stop_order_type: 1;
+condition_price2: 0.0;
+ordertime: 221157;
+balance: 2.0;
+spread: 0.0;
+linkedorder: 0;
+withdraw_time: 0;
+brokerref: long open;
+seccode: SiH2;
+co_order_num: 0;
+trans_id: 1000177;
+order_num: 1672382;
+stopflags: 32;
+co_order_price: 0.0;
+condition_price: 78529.0;
+condition_class_code: SPBFUT;
+qty: 2.0;
+active_to_time: 0;
+ordernum: 1672382;
+uid: 77133;
+condition_sec_code: SiH2;
+client_code: SPBFUTJRk1N;
+class_code: SPBFUT;
+firmid: SPBFUT;
+sec_code: SiH2;
+canceled_uid: 0;
+active_from_time: 0;
+filled_qty: 0.0;
+offset: 0.0;
+price: 78608.0;
+alltrade_num: 0;
+orderdate: 20220123;
+condition: 5;
+
+trans_id = 1000177
+order_num = 1672382
+
+clearStopOrders
+ONSTOP_QUEUE size left 0
+
+@@@@@@@@@@ 01/23/22 | 22:12:26 @@@@@@@@@@
+
+ONSTOP_QUEUE size 1
+flags: 25;
+filled_qty: 0.0;
+trans_id: 1000179;
+condition_sec_code: SiH2;
+brokerref: long open;
+ordernum: 1672383;
+account: SPBFUTJRk1N;
+canceled_uid: 0;
+active_from_time: 0;
+qty: 2.0;
+sec_code: SiH2;
+co_order_price: 0.0;
+offset: 0.0;
+price: 78608.0;
+condition_price: 78529.0;
+expiry: 20220123;
+client_code: SPBFUTJRk1N;
+linkedorder: 0;
+alltrade_num: 0;
+order_num: 1672383;
+condition_class_code: SPBFUT;
+stopflags: 32;
+class_code: SPBFUT;
+seccode: SiH2;
+condition: 5;
+active_to_time: 0;
+condition_price2: 0.0;
+withdraw_time: 0;
+uid: 77133;
+stop_order_type: 1;
+balance: 2.0;
+spread: 0.0;
+co_order_num: 0;
+condition_seccode: SiH2;
+orderdate: 20220123;
+ordertime: 221226;
+firmid: SPBFUT;
+
+trans_id = 1000179
+order_num = 1672383
+
+clearStopOrders
+ONSTOP_QUEUE size left 0
+
+ONSTOP_QUEUE size 1
+flags: 26;
+filled_qty: 0.0;
+trans_id: 1000179;
+condition_sec_code: SiH2;
+brokerref: long open;
+ordernum: 1672383;
+account: SPBFUTJRk1N;
+canceled_uid: 77133;
+active_from_time: 0;
+qty: 2.0;
+sec_code: SiH2;
+co_order_price: 0.0;
+offset: 0.0;
+price: 78608.0;
+condition_price: 78529.0;
+expiry: 20220123;
+client_code: SPBFUTJRk1N;
+linkedorder: 0;
+alltrade_num: 0;
+order_num: 1672383;
+condition_class_code: SPBFUT;
+stopflags: 32;
+class_code: SPBFUT;
+seccode: SiH2;
+condition: 5;
+active_to_time: 0;
+condition_price2: 0.0;
+withdraw_time: 221227;
+uid: 77133;
+stop_order_type: 1;
+balance: 2.0;
+spread: 0.0;
+co_order_num: 0;
+condition_seccode: SiH2;
+orderdate: 20220123;
+ordertime: 221226;
+firmid: SPBFUT;
+
+trans_id = 0
+order_num = 0
+
+ONSTOP_QUEUE size left 0
+
+@@@@@@@@@@ 01/23/22 | 22:41:05 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:41:30 @@@@@@@@@@
+
+ONSTOP_QUEUE size 1
+client_code: SPBFUTJRk1N;
+condition: 5;
+active_from_time: 0;
+co_order_price: 0.0;
+co_order_num: 0;
+ordertime: 224131;
+condition_class_code: SPBFUT;
+canceled_uid: 0;
+condition_sec_code: SiH2;
+trans_id: 1000181;
+stop_order_type: 1;
+condition_price: 78529.0;
+flags: 25;
+firmid: SPBFUT;
+expiry: 20220123;
+brokerref: long open;
+orderdate: 20220123;
+account: SPBFUTJRk1N;
+linkedorder: 0;
+filled_qty: 0.0;
+stopflags: 32;
+qty: 2.0;
+condition_seccode: SiH2;
+class_code: SPBFUT;
+order_num: 1672384;
+sec_code: SiH2;
+condition_price2: 0.0;
+balance: 2.0;
+active_to_time: 0;
+withdraw_time: 0;
+uid: 77133;
+ordernum: 1672384;
+seccode: SiH2;
+spread: 0.0;
+offset: 0.0;
+alltrade_num: 0;
+price: 78608.0;
+ONSTOP_QUEUE size left 0
+
+@@@@@@@@@@ 01/23/22 | 22:42:03 @@@@@@@@@@
+
+ONSTOP_QUEUE size 1
+qty: 2.0;
+uid: 77133;
+linkedorder: 0;
+seccode: SiH2;
+co_order_price: 0.0;
+active_to_time: 0;
+condition_class_code: SPBFUT;
+ordernum: 1672385;
+condition_sec_code: SiH2;
+balance: 2.0;
+condition_price2: 0.0;
+orderdate: 20220123;
+account: SPBFUTJRk1N;
+canceled_uid: 0;
+co_order_num: 0;
+price: 78608.0;
+condition_seccode: SiH2;
+firmid: SPBFUT;
+alltrade_num: 0;
+offset: 0.0;
+flags: 25;
+ordertime: 224203;
+condition: 5;
+condition_price: 78529.0;
+client_code: SPBFUTJRk1N;
+sec_code: SiH2;
+filled_qty: 0.0;
+withdraw_time: 0;
+brokerref: long open;
+active_from_time: 0;
+spread: 0.0;
+stopflags: 32;
+trans_id: 1000183;
+class_code: SPBFUT;
+stop_order_type: 1;
+expiry: 20220123;
+order_num: 1672385;
+ONSTOP_QUEUE size left 0
+
+@@@@@@@@@@ 01/23/22 | 22:43:55 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:44:20 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:44:43 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:45:40 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:46:17 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:46:33 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:47:05 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:47:18 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:49:16 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:50:02 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:50:19 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:51:01 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:51:26 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:52:06 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:52:57 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:54:50 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:55:53 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:57:01 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:57:20 @@@@@@@@@@
+
+@@@@@@@@@@ 01/23/22 | 22:57:58 @@@@@@@@@@
+
+ONSTOP_QUEUE size 1
+co_order_price: 0.0;
+withdraw_time: 225758;
+flags: 26;
+active_from_time: 0;
+ordernum: 1672385;
+condition_price: 78529.0;
+brokerref: long open;
+condition_sec_code: SiH2;
+client_code: SPBFUTJRk1N;
+firmid: SPBFUT;
+account: SPBFUTJRk1N;
+order_num: 1672385;
+active_to_time: 0;
+price: 78608.0;
+qty: 2.0;
+condition_class_code: SPBFUT;
+class_code: SPBFUT;
+sec_code: SiH2;
+alltrade_num: 0;
+offset: 0.0;
+linkedorder: 0;
+seccode: SiH2;
+balance: 2.0;
+stop_order_type: 1;
+canceled_uid: 77133;
+expiry: 20220123;
+condition_price2: 0.0;
+filled_qty: 0.0;
+uid: 77133;
+condition_seccode: SiH2;
+co_order_num: 0;
+spread: 0.0;
+stopflags: 32;
+ordertime: 224203;
+trans_id: 1000183;
+orderdate: 20220123;
+condition: 5;
+ONSTOP_QUEUE size left 0
+
+@@@@@@@@@@ 01/23/22 | 22:58:32 @@@@@@@@@@
+
+ONSTOP_QUEUE size 1
+condition_price: 78529.0;
+trans_id: 1000185;
+stopflags: 32;
+active_to_time: 0;
+balance: 2.0;
+alltrade_num: 0;
+stop_order_type: 1;
+account: SPBFUTJRk1N;
+order_num: 1672386;
+condition_price2: 0.0;
+spread: 0.0;
+orderdate: 20220123;
+ordernum: 1672386;
+condition_class_code: SPBFUT;
+co_order_price: 0.0;
+canceled_uid: 0;
+condition: 5;
+ordertime: 225833;
+sec_code: SiH2;
+brokerref: long open;
+flags: 25;
+expiry: 20220123;
+filled_qty: 0.0;
+firmid: SPBFUT;
+price: 78608.0;
+qty: 2.0;
+condition_sec_code: SiH2;
+client_code: SPBFUTJRk1N;
+active_from_time: 0;
+condition_seccode: SiH2;
+class_code: SPBFUT;
+seccode: SiH2;
+withdraw_time: 0;
+uid: 77133;
+offset: 0.0;
+co_order_num: 0;
+linkedorder: 0;
+ONSTOP_QUEUE size left 0
+

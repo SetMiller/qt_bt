@@ -68,7 +68,7 @@ function clearStopOrders(order_num, trans_id)
         local account       = getItem("stop_orders", i).account
         local trans_id      = getItem("stop_orders", i).trans_id
 
-        if order_num == stateOrderNum and trans_id == stateTransId and account == trdaccid then   
+        if order_num == stateOrderNum and trans_id == stateTransId and account == trdaccid then 
             local transaction = {
             ["TRANS_ID"] = tostring(stateTransId),
             ["ACTION"] = "KILL_STOP_ORDER",

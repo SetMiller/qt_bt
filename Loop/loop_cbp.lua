@@ -17,7 +17,6 @@ function OnQuikCallbackProcessing() end
 
 function OnStopCallbackProcessing(queue)
     -- LOGS:update(string.format("Callback processing %s are started\n", queue.callback))
-    -- -- sleep(10) --эмуляция продолжительного алгоритма обработки события
     st_readData_W(queue.order)
     -- st_readBitData_W(queue.order, queue.enum)
 
@@ -44,15 +43,15 @@ function OnStopCallbackProcessing(queue)
             end
         end
 
-        LOGS:update('\n', 'trans_id = '  .. STATE_ACTIVE_ONSTOP.trans_id .. '\n', 'order_num = '  .. STATE_ACTIVE_ONSTOP.order_num .. '\n', '\n')
+        -- LOGS:update('\n', 'trans_id = '  .. STATE_ACTIVE_ONSTOP.trans_id .. '\n', 'order_num = '  .. STATE_ACTIVE_ONSTOP.order_num .. '\n', '\n')
+        
+        -- LOGS:update('clearStopOrders\n')
+        -- message('ACTIVE_ONSTOP_COUNTER =' .. STATE_COUNTER)
+        
+        StateCallBackProcessingDump()
         
         -- clearStopOrders(STATE_ACTIVE_ONSTOP.order_num, STATE_ACTIVE_ONSTOP.trans_id)
-        -- LOGS:update('clearStopOrders\n')
-        
-        -- LOGS:update('trans_id = '  .. STATE_ACTIVE_ONSTOP.trans_id .. '\n', 'order_num = '  .. STATE_ACTIVE_ONSTOP.order_num .. '\n', '\n')
-
-        -- STATE_KEYS.callbackProcessing = false
-        -- STATE_COUNTER = 0
+        -- STATE_KEYS.callbackProcessing = true
 
     elseif queue.order.flags == 26 or queue.order.flags == 30 then
         --TODO: заявка снята
@@ -61,22 +60,38 @@ function OnStopCallbackProcessing(queue)
         -- сверяем СТЕЙТ данные со снятой заявкой и сбрасываем их
         if queue.order.trans_id == STATE_ACTIVE_ONSTOP.trans_id and queue.order.order_num == STATE_ACTIVE_ONSTOP.order_num then
 
-            STATE_ACTIVE_ONSTOP.trans_id = 0
-            STATE_ACTIVE_ONSTOP.order_num = 0
 
-            LOGS:update('\n', 'trans_id = '  .. STATE_ACTIVE_ONSTOP.trans_id .. '\n', 'order_num = '  .. STATE_ACTIVE_ONSTOP.order_num .. '\n', '\n')
-    
-            -- message('STATE_COUNTER =' .. STATE_COUNTER)
+            if STATE_DATA.totalNet == 0 then
 
-            STATE_KEYS.callbackProcessing = false
-            STATE_COUNTER = 0
+                StateActiveOnStopDumpNoPoss()
+
+            elseif STATE_DATA.totalNet ~= 0 then
+
+                StateActiveOnStopDumpWithPoss()
+
+            end
+
+            -- if STATE_DATA.totalNet == 0 then
+
+            --     -- LOGS:update('\n', 'trans_id = '  .. STATE_ACTIVE_ONSTOP.trans_id .. '\n', 'order_num = '  .. STATE_ACTIVE_ONSTOP.order_num .. '\n', '\n')
+            --     -- message('DELETED_ONSTOP_COUNTER =' .. STATE_COUNTER)
+
+            --     --FIXME:
+            --     STATE_KEYS.update = false
+            -- else
+                
+            -- end
+
+            -- STATE_KEYS.callbackProcessing = false
+            -- STATE_COUNTER = 0
         end
 
     elseif queue.order.flags == 24 or queue.order.flags == 28 then
         --TODO: заявка сработала
-
-
-
+        
+        -- позиция открыта
+        -- позиция закрыта
+        STATE_KEYS.update = true
     end
 
     --TODO: -- тут функция должна анализировать что и как заполнено и обновлять позицию
