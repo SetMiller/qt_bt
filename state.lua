@@ -26,3 +26,5 @@ STATE_POSS = {
     ['ClosePrice']          = '',       
     ['Lots']                = '',            
 }
+
+STATE_MAIN_QUEUE = {}

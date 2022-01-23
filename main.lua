@@ -1,22 +1,25 @@
 dofile(getScriptPath().."\\user\\u_Options.lua")
 dofile(getScriptPath().."\\garbage.lua")
+
 dofile(getScriptPath().."\\obj\\o_ChartData.lua")
 dofile(getScriptPath().."\\obj\\o_HeikenAshi.lua")
-dofile(getScriptPath().."\\stack_init.lua")
-dofile(getScriptPath().."\\stack_update.lua")
-dofile(getScriptPath().."\\dataSource.lua")
+dofile(getScriptPath().."\\s_init.lua")
+dofile(getScriptPath().."\\s_update.lua")
+dofile(getScriptPath().."\\s_ds.lua")
+dofile(getScriptPath().."\\s_cp.lua")
+
 dofile(getScriptPath().."\\stuff\\st_QuikData.lua")
 dofile(getScriptPath().."\\state.lua")
 
-
+dofile(getScriptPath().."\\stuff\\st_Order.lua")
 
 
 --
 -- Инициализация приложения
 --
 function OnInit()
-    stack_init()
-    MAIN_QUEUE = {}
+    s_init()
+    
     -- message("init STATE_DATA.depoLimit =" .. STATE_DATA.depoLimit)
 
     
@@ -32,6 +35,7 @@ end
 
 function OnStop()
     STATE_KEYS.isRun = false
+    LOGS:close()
     -- return 100
 end
 
@@ -46,29 +50,39 @@ function main()
     --TODO: обернуть в функцию проверки правильности введенных данных из Options
     if TRADE_TYPE ~= 'long' and TRADE_TYPE ~= 'short' then error(("check TRADE_TYPE in user -> u_Options -> (must be 'long or short', got '%s')"):format(TRADE_TYPE), 2) end
 
-    f = io.open(getScriptPath()..'\\STOP_INFO.txt','w') 
+    
+    local a = stopOrderOpenPoss(78697, 78797, 1)
+    local b = stopOrderOpenPoss(78797, 78897, 2)
+
+    respa = sendTransaction(a)
+    message(tostring(respa))
+    respb = sendTransaction(b)
+    message(tostring(respb))
+
+
 
     while STATE_KEYS.isRun do
         
         sleep(100)
         -- if counter > 30000 then is_run = false end
-        if #MAIN_QUEUE > 0 then 
-            f:write("QUEUE size " .. tostring(#MAIN_QUEUE) .. '\n')
-            f:flush()
-            -- message("QUEUE size " .. tostring(#MAIN_QUEUE))
-            ProcessingCallback(MAIN_QUEUE[1])
-            table.sremove(MAIN_QUEUE, 1)
+        if #STATE_MAIN_QUEUE > 0 then 
+            LOGS:update("QUEUE size " .. tostring(#STATE_MAIN_QUEUE) .. '\n')
 
-            f:write("QUEUE size left " .. tostring(#MAIN_QUEUE) .. '\n')
-            f:write('\n')
-            f:flush()
+            -- message("QUEUE size " .. tostring(#MAIN_QUEUE))
+            CallbackProcessing(STATE_MAIN_QUEUE[1])
+
+
+            table.sremove(STATE_MAIN_QUEUE, 1)
+
+
+            LOGS:update("QUEUE size left " .. tostring(#STATE_MAIN_QUEUE) .. '\n', '\n')
             
         else
 
 
             if STATE_KEYS.update then
                 
-                stack_update()
+                s_update()
                 
                 STATE_KEYS.update = false
             end
@@ -100,7 +114,7 @@ end
 -- Функция обратного вызова для завершения работы привода
 --
 function OnStop()                                                         
-    f:close()
+    LOGS:close()
 end
 
 function OnFuturesLimitChange(fut_limit)
@@ -132,7 +146,7 @@ function OnTransReply()
 end
 
 function OnStopOrder(order)
-    table.sinsert(MAIN_QUEUE, {callback = "OnStopOrder", order = order, enum = enum_OnStopOrder})
+    table.sinsert(STATE_MAIN_QUEUE, {callback = "OnStopOrder", order = order, enum = enum_OnStopOrder})
     -- message('OnStopOrder --------------------->')
     
     
@@ -143,7 +157,7 @@ function OnStopOrder(order)
 end
 
 function OnOrder(order)
-    table.sinsert(MAIN_QUEUE, {callback = "OnOrder", order = order, enum = enum_OnOrder})
+    table.sinsert(STATE_MAIN_QUEUE, {callback = "OnOrder", order = order, enum = enum_OnOrder})
     -- message('OnOrder --------------------->')
     
     -- message(ReadData(order) .. '\n' .. ReadBitData(order, enum_OnOrder))
@@ -152,7 +166,7 @@ function OnOrder(order)
 end
 
 function OnTrade(order)
-    table.sinsert(MAIN_QUEUE, {callback = "OnTrade", order = order, enum = enum_OnTrade})
+    table.sinsert(STATE_MAIN_QUEUE, {callback = "OnTrade", order = order, enum = enum_OnTrade})
     -- message('**OnTrade --------------------->')
 
     -- message(ReadData(order) .. '\n' .. ReadBitData(order, enum_OnTrade))

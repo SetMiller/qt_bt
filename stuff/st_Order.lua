@@ -1,55 +1,92 @@
--- возвращает стоп заявку
+dofile(getScriptPath().."\\stuff\\st_TransId.lua")
+dofile(getScriptPath().."\\user\\u_Options.lua")
+
+--
+--
+--
+
+function stopOrderOpenPoss() end
+function stopOrderClosePoss() end
+
+--
+--
+--
+
+function stopOrderOpenPoss(StopPrice, Price, Lots)
+    local stopOrder = {}
+
+    stopOrder = {
+        ["ACTION"] = "NEW_STOP_ORDER",                              
+        ["ACCOUNT"] = trdaccid, 
+        ["TRANS_ID"] = tostring(st_transId()),                         
+        ["CLASSCODE"] = CLASS_CODE,                                          
+        ["SECCODE"] = SEC_CODE,                                        
+        ["OPERATION"] = TRADE_TYPE == 'long' and 'B' or 'S',                                      
+        ["QUANTITY"] = tostring(Lots),  
+        ["CLIENT_CODE"] = TRADE_TYPE,                              
+        ["STOPPRICE"] = tostring(StopPrice),                                 
+        ["PRICE"] = tostring(Price),                                        
+        ["EXPIRY_DATE"] = 'TODAY',
+    }
+
+    return stopOrder
+end
+
+function stopOrderClosePoss(StopPrice, Price, Lots) 
+    local stopOrder = {}
+
+    stopOrder = {
+        ["ACTION"] = "NEW_STOP_ORDER",                              
+        ["ACCOUNT"] = trdaccid, 
+        ["TRANS_ID"] = tostring(st_transId()),                         
+        ["CLASSCODE"] = CLASS_CODE,                                          
+        ["SECCODE"] = SEC_CODE,                                        
+        ["OPERATION"] = TRADE_TYPE == 'long' and 'S' or 'B',                                      
+        ["QUANTITY"] = TRADE_TYPE == 'long' and tostring(Lots) or tostring(Lots * (-1)),  
+        ["CLIENT_CODE"] = TRADE_TYPE,                              
+        ["STOPPRICE"] = tostring(StopPrice),                                 
+        ["PRICE"] = tostring(Price),                                        
+        ["EXPIRY_DATE"] = 'TODAY',
+    }
+
+    return stopOrder
+end
 
 
--- local transactionStack.outPoss = {
---     ["ACTION"] = "NEW_STOP_ORDER",                              
---     ["SECCODE"] = Private.quikSetup.futures.SECCODE,                                        
---     ["CLASSCODE"] = Private.quikSetup.futures.CLASSCODE,                                          
---     ["ACCOUNT"] = Private.account.trdaccid, 
---     ["CLIENT_CODE"] = GV:getInfo(),                              
---     ["QUANTITY"] = tradePoss.operation == 'long' and tostring(tradePoss.stopLotsValue) or tostring(tradePoss.stopLotsValue * (-1)),  
---     ["TRANS_ID"] = Private:getTransId(Private.transIdStack),                         
---     ["OPERATION"] = tradePoss.operation == 'long' and 'S' or 'B',                                      
---     ["STOPPRICE"] = tostring(tradePoss.stockPriceOut),                                 
---     ["PRICE"] = tostring(tradePoss.futuresPriceOut),                                        
---     ["EXPIRY_DATE"] = 'GTC',
---  }
 
 
+function clearStopOrders(stopType)
+    -- local stopTypes
+    -- local accData = GV:getAccountData()
+    -- if stopType == 'long' then
+    --    stopTypes = GV:getLongActiveStops()
+    -- elseif stopType == 'short' then
+    --    stopTypes = GV:getShortActiveStops()
+    -- else
+    --    stopTypes = GV:getAllActiveStops()
+    --    message('All stops are deleted')
+    -- end
 
-
--- function clearStopOrders(stopType)
---     local stopTypes
---     local accData = GV:getAccountData()
---     if stopType == 'long' then
---        stopTypes = GV:getLongActiveStops()
---     elseif stopType == 'short' then
---        stopTypes = GV:getShortActiveStops()
---     else
---        stopTypes = GV:getAllActiveStops()
---        message('All stops are deleted')
---     end
-
---     for i = 0, getNumberOf("stop_orders") - 1 do  
---        for k, v in ipairs(stopTypes) do  
---           local orderNum = getItem("stop_orders", i).order_num
---           local account = getItem("stop_orders", i).account
---           -- message('' .. account)
---           if getItem("stop_orders", i).flags == v and account == accData.trdaccid then   
---              local transaction = {
---                 ["TRANS_ID"] = Private:getTransId(Private.transIdStack),
---                 ["ACTION"] = "KILL_STOP_ORDER",
---                 ["SECCODE"] = Private.quikSetup.futures.SECCODE,                                        
---                 ["CLASSCODE"] = Private.quikSetup.futures.CLASSCODE,
---                 ["STOP_ORDER_KEY"] = tostring(orderNum),
---              }
---              resp = sendTransaction(transaction);
---              message(resp)
---           end
---        end
---     end
+    for i = 0, getNumberOf("stop_orders") - 1 do  
+       for k, v in ipairs(stopTypes) do  
+          local orderNum = getItem("stop_orders", i).order_num
+          local account = getItem("stop_orders", i).account
+          -- message('' .. account)
+          if getItem("stop_orders", i).flags == v and account == accData.trdaccid then   
+             local transaction = {
+                ["TRANS_ID"] = Private:getTransId(Private.transIdStack),
+                ["ACTION"] = "KILL_STOP_ORDER",
+                ["SECCODE"] = Private.quikSetup.futures.SECCODE,                                        
+                ["CLASSCODE"] = Private.quikSetup.futures.CLASSCODE,
+                ["STOP_ORDER_KEY"] = tostring(orderNum),
+             }
+             resp = sendTransaction(transaction);
+             message(resp)
+          end
+       end
+    end
     
---  end
+ end
 
 
 -- function Private:marketClose()

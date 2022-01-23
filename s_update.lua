@@ -10,9 +10,9 @@ dofile(getScriptPath().."\\state.lua")
 --
 --
 
-function stack_update() end
+function s_update() end
 
-function stack_update() 
+function s_update() 
     STATE_DATA.depoLimit            = getDepoLimit(firmid, trdaccid, limitType, currcode)           -- получаем данные по ДЕПО
     STATE_DATA.riskPerTrade         = getRiskPerTrade(STATE_DATA.depoLimit, RISK_PER_TRADE)         -- расчитываем риск на 1 сделку в рублях
     STATE_DATA.totalNet             = getTotalNet(trdaccid, SEC_CODE)                               -- получаем данные о стопе

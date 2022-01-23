@@ -30,8 +30,7 @@ function ReadData_W(data, enum)
                 -- str = str .. k .. " -> !!! table !!!;\n"
             else
                 str = tostring(k) .. ": " .. tostring(v) .. ';\n'
-                f:write(str)
-                f:flush()
+                LOGS:update(str)
                 -- sleep(10)
                 
             end
@@ -61,8 +60,7 @@ function ReadBitData_W(order, enum)
 
     for _, v in pairs(enum) do
         bit_str = v ..' bit =' .. tostring(checkBit(order.flags, v)) .. ';\n'
-        f:write(bit_str)
-        f:flush()
+        LOGS:update(bit_str)
     end
 
     return bit_str
@@ -116,16 +114,3 @@ function checkBit(flags, _bit)
     else return false end
 end
 
-function ProcessingCallback(queue)
-    -- message(string.format("Callback processing %s are started", queue.callback))
-    f:write(string.format("Callback processing %s are started\n", queue.callback))
-    f:flush()
-    -- sleep(10) --эмуляция продолжительного алгоритма обработки события
-    ReadData_W(queue.order)
-    ReadBitData_W(queue.order, queue.enum)
-    f:write(string.format("Callback processing %s are finished\n", queue.callback))
-    f:flush()
-
-
-    -- тут должна происходить вся магия
-end
