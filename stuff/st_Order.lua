@@ -12,8 +12,9 @@ function stopOrderClosePoss() end
 --
 --
 
-function stopOrderOpenPoss(StopPrice, Price, Lots)
-    local stopOrder = {}
+function stopOrderOpenPoss(StopPrice, Price, Lots, SecScale)
+    local stopOrder         = {}
+    local priceSecScale     = '%.' .. tonumber(string.format('%.0f', SecScale)) .. 'f'
 
     stopOrder = {
         ["ACTION"] = "NEW_STOP_ORDER",                              
@@ -23,9 +24,9 @@ function stopOrderOpenPoss(StopPrice, Price, Lots)
         ["SECCODE"] = SEC_CODE,                                        
         ["OPERATION"] = TRADE_TYPE == 'long' and 'B' or 'S',                                      
         ["QUANTITY"] = tostring(Lots),  
-        ["CLIENT_CODE"] = TRADE_TYPE,                              
-        ["STOPPRICE"] = tostring(StopPrice),                                 
-        ["PRICE"] = tostring(Price),                                        
+        ["CLIENT_CODE"] = TRADE_TYPE .. ' open',                              
+        ["STOPPRICE"] = tostring(tonumber(string.format(priceSecScale, StopPrice))),                                 
+        ["PRICE"] = tostring(tonumber(string.format(priceSecScale, Price))),                                        
         ["EXPIRY_DATE"] = 'TODAY',
     }
 
@@ -43,9 +44,9 @@ function stopOrderClosePoss(StopPrice, Price, Lots)
         ["SECCODE"] = SEC_CODE,                                        
         ["OPERATION"] = TRADE_TYPE == 'long' and 'S' or 'B',                                      
         ["QUANTITY"] = TRADE_TYPE == 'long' and tostring(Lots) or tostring(Lots * (-1)),  
-        ["CLIENT_CODE"] = TRADE_TYPE,                              
-        ["STOPPRICE"] = tostring(StopPrice),                                 
-        ["PRICE"] = tostring(Price),                                        
+        ["CLIENT_CODE"] = TRADE_TYPE .. ' open',                              
+        ["STOPPRICE"] = tostring(tonumber(string.format("%.0f", StopPrice))),                                 
+        ["PRICE"] = tostring(tonumber(string.format("%.0f", Price))),                                        
         ["EXPIRY_DATE"] = 'TODAY',
     }
 

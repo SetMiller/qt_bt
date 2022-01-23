@@ -4,10 +4,12 @@
 
 function CallbackProcessing() end
 
-
+--
+--
+--
 
 function CallbackProcessing(queue)
-    -- message(string.format("Callback processing %s are started", queue.callback))
+    message(string.format("Callback processing %s are started", queue.callback))
     LOGS:update(string.format("Callback processing %s are started\n", queue.callback))
     -- sleep(10) --эмуляция продолжительного алгоритма обработки события
     st_readData_W(queue.order)

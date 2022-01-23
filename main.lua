@@ -3,11 +3,11 @@ dofile(getScriptPath().."\\stuff\\st_ReadData.lua")
 
 dofile(getScriptPath().."\\obj\\o_ChartData.lua")
 dofile(getScriptPath().."\\obj\\o_HeikenAshi.lua")
-dofile(getScriptPath().."\\Init\\i_Init.lua")
-dofile(getScriptPath().."\\Init\\i_ds.lua")
+dofile(getScriptPath().."\\init\\i_Init.lua")
+dofile(getScriptPath().."\\init\\i_ds.lua")
 
-dofile(getScriptPath().."\\Loop\\loop_Update.lua")
-dofile(getScriptPath().."\\Loop\\loop_cbp.lua")
+dofile(getScriptPath().."\\loop\\loop_Update.lua")
+dofile(getScriptPath().."\\loop\\loop_cbp.lua")
 
 dofile(getScriptPath().."\\stuff\\st_QuikData.lua")
 dofile(getScriptPath().."\\user\\u_State.lua")
@@ -52,13 +52,13 @@ function main()
     if TRADE_TYPE ~= 'long' and TRADE_TYPE ~= 'short' then error(("check TRADE_TYPE in user -> u_Options -> (must be 'long or short', got '%s')"):format(TRADE_TYPE), 2) end
 
     
-    local a = stopOrderOpenPoss(78697, 78797, 1)
-    local b = stopOrderOpenPoss(78797, 78897, 2)
+    -- local a = stopOrderOpenPoss(78697, 78797, 1, 1)
+    -- local b = stopOrderOpenPoss(78797, 78897, 2)
 
-    respa = sendTransaction(a)
-    message(tostring(respa))
-    respb = sendTransaction(b)
-    message(tostring(respb))
+    -- respa = sendTransaction(a)
+    -- message(tostring(respa))
+    -- respb = sendTransaction(b)
+    -- message(tostring(respb))
 
 
 
@@ -80,10 +80,9 @@ function main()
             
         else
 
-
             if STATE_KEYS.update then
                 
-                s_update()
+                loop_update() 
                 
                 STATE_KEYS.update = false
             end
@@ -148,7 +147,7 @@ end
 
 function OnStopOrder(order)
     table.sinsert(STATE_MAIN_QUEUE, {callback = "OnStopOrder", order = order, enum = enum_OnStopOrder})
-    -- message('OnStopOrder --------------------->')
+    message('OnStopOrder --------------------->')
     
     
     -- message(ReadData(order) .. '\n' .. ReadBitData(order, enum_OnStopOrder))

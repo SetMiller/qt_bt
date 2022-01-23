@@ -2,10 +2,7 @@ STATE_KEYS = {
     ['isRun']       = true,
     ['init']        = false,
     ['update']      = false,
-
-    ['isPatterns']    = false,
-
-
+    ['isPatterns']  = false,
 }
 
 STATE_DATA = {
@@ -28,3 +25,8 @@ STATE_POSS = {
 }
 
 STATE_MAIN_QUEUE = {}
+
+STATE_ORDER = {
+    ['PossIN']      = {},
+    ['PossOUT']     = {},
+}

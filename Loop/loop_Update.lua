@@ -8,13 +8,19 @@ dofile(getScriptPath().."\\stuff\\st_PossLotsCalc.lua")
 
 dofile(getScriptPath().."\\user\\u_Options.lua")
 dofile(getScriptPath().."\\user\\u_State.lua")
+
+dofile(getScriptPath().."\\stuff\\st_ReadData.lua")
 --
 --
 --
 
-function s_update() end
+function loop_update() end
 
-function s_update() 
+--
+--
+--
+
+function loop_update() 
     STATE_DATA.depoLimit            = getDepoLimit(firmid, trdaccid, limitType, currcode)           -- получаем данные по ДЕПО
     STATE_DATA.riskPerTrade         = getRiskPerTrade(STATE_DATA.depoLimit, RISK_PER_TRADE)         -- расчитываем риск на 1 сделку в рублях
     STATE_DATA.totalNet             = getTotalNet(trdaccid, SEC_CODE)                               -- получаем данные о стопе
@@ -22,14 +28,14 @@ function s_update()
     -- message("init depoLimit =" .. STATE_DATA.depoLimit)
     -- message("init totalNet =" .. STATE_DATA.totalNet)
 
-    STATE_DATA.chartCandles         = CD:update(ds)                             -- получаем массив стандартных
-    STATE_DATA.heikenAshiCandles    = HA:update(STATE_DATA.chartCandles)        -- получаем массив конвертированных в heikenAshi свечек
+    STATE_DATA.chartCandles         = CD:update(ds)                                                 -- получаем массив стандартных
+    STATE_DATA.heikenAshiCandles    = HA:update(STATE_DATA.chartCandles, STATE_DATA.futuresParam.SEC_SCALE)        -- получаем массив конвертированных в heikenAshi свечек
 
     -- Определяем наличие паттерна TODO: если паттерна нет, то пропускаем
     if TRADE_TYPE == 'long' then  STATE_KEYS.isPatterns = is_LongPatterns(STATE_DATA.heikenAshiCandles) else STATE_KEYS.patterns = is_ShortPatterns(STATE_DATA.heikenAshiCandles) end
 
     -- Если паттерн есть, то считаем позицию и тд
-    -- if STATE_KEYS.isPatterns then
+    if STATE_KEYS.isPatterns then
 
         -- message('pattern found')
         -- Если long скрипт, то считаем лонговый вариант позиции
@@ -57,14 +63,25 @@ function s_update()
         
         STATE_POSS.Lots = PossLotsCalc(STATE_POSS, STATE_DATA.futuresParam, STATE_KEYS.possGO, STATE_DATA.riskPerTrade, STATE_DATA.depoLimit)
         
-        message("OpenStop:" .. tostring(STATE_POSS.OpenStopPrice) .. "\nOpen:" .. tostring(STATE_POSS.OpenPrice) .. " \nCloseStop:" .. tostring(STATE_POSS.CloseStopPrice) .. " \nClose:" .. tostring(STATE_POSS.ClosePrice) .. " \npossGO:" .. tostring(STATE_KEYS.possGO))
-        message(tostring(STATE_POSS.Lots))
+        -- message("OpenStop:" .. tostring(STATE_POSS.OpenStopPrice) .. "\nOpen:" .. tostring(STATE_POSS.OpenPrice) .. " \nCloseStop:" .. tostring(STATE_POSS.CloseStopPrice) .. " \nClose:" .. tostring(STATE_POSS.ClosePrice) .. " \npossGO:" .. tostring(STATE_KEYS.possGO))
+        -- message(tostring(STATE_POSS.Lots))
     
-    -- else
+    else
         
-        -- message('pattern not found')
+        message('pattern not found')
         
-    -- end
+    end
+
+    -- STATE_ORDER.PossIN      = stopOrderOpenPoss(STATE_POSS.OpenStopPrice, STATE_POSS.OpenPrice, STATE_POSS.Lots, STATE_DATA.futuresParam.SEC_SCALE)
+    -- STATE_ORDER.PossOUT     = stopOrderClosePoss(STATE_POSS.CloseStopPrice, STATE_POSS.ClosePrice, STATE_POSS.Lots, STATE_DATA.futuresParam.SEC_SCALE)
+
+    -- local resp1 = sendTransaction(STATE_ORDER.PossIN)
+    -- message(resp1)
+    -- local resp2 = sendTransaction(STATE_ORDER.PossOUT)
+    -- message(resp2)
+
+    -- st_readData(STATE_ORDER.PossIN)
+    -- st_readData(STATE_ORDER.PossOUT)
     
     -- TODO:    -- отдельный цикл для формировании позы и заявок
     -- и сделать по ключу что позиция сформирована уже отправку и отслеживание

@@ -31,6 +31,7 @@ function st_readData(data, enum)
         str = str + tostring(data)
     end
 
+    message(str)
     return str
 end
 
