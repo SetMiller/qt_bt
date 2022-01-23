@@ -4,14 +4,18 @@ dofile(getScriptPath().."\\obj\\o_Logs.lua")
 
 dofile(getScriptPath().."\\stuff\\st_QuikData.lua")
 dofile(getScriptPath().."\\user\\u_Options.lua")
-dofile(getScriptPath().."\\state.lua")
+dofile(getScriptPath().."\\user\\u_State.lua")
 --
 --
 --
 
-function s_init() end
+function i_Init() end
 
-function s_init() 
+--
+--
+--
+
+function i_Init() 
 
     CD      = ChartData:new(CANDLES_TO_CHECK)
     HA      = HeikenAshi:new()

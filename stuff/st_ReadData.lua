@@ -1,4 +1,20 @@
-function ReadData(data, enum)
+
+--
+--
+--
+
+function st_readData() end
+function st_readData_W() end
+function st_readBitData() end
+function st_readBitData_W() end
+function st_deepCopy() end
+function st_checkBit() end
+
+--
+--
+--
+
+function st_readData(data, enum)
     local data      = data
     local str       = ''
 
@@ -18,7 +34,7 @@ function ReadData(data, enum)
     return str
 end
 
-function ReadData_W(data, enum)
+function st_readData_W(data, enum)
     local data      = data
     local str       = ''
 
@@ -43,23 +59,23 @@ function ReadData_W(data, enum)
     -- return str
 end
 
-function ReadBitData(order, enum) 
+function st_readBitData(order, enum) 
     local enum      = enum
     local bit_str   = ''
 
     for _, v in pairs(enum) do
-        bit_str = bit_str .. v ..' bit =' .. tostring(checkBit(order.flags, v)) .. ';\n'
+        bit_str = bit_str .. v ..' bit =' .. tostring(st_checkBit(order.flags, v)) .. ';\n'
     end
 
     return bit_str
 end
 
-function ReadBitData_W(order, enum) 
+function st_readBitData_W(order, enum) 
     local enum      = enum
     local bit_str   = ''
 
     for _, v in pairs(enum) do
-        bit_str = v ..' bit =' .. tostring(checkBit(order.flags, v)) .. ';\n'
+        bit_str = v ..' bit =' .. tostring(st_checkBit(order.flags, v)) .. ';\n'
         LOGS:update(bit_str)
     end
 
@@ -67,22 +83,22 @@ function ReadBitData_W(order, enum)
 end
 
 
-function DeepCopy(orig)
+function st_deepCopy(orig)
   local orig_type = type(orig)
   local copy
   if orig_type == 'table' then
       copy = {}
       for orig_key, orig_value in next, orig, nil do
-          copy[DeepCopy(orig_key)] = DeepCopy(orig_value)
+          copy[st_deepCopy(orig_key)] = st_deepCopy(orig_value)
       end
-      setmetatable(copy, DeepCopy(getmetatable(orig)))
+      setmetatable(copy, st_deepCopy(getmetatable(orig)))
   else -- number, string, boolean, etc
       copy = orig
   end
   return copy
 end
 
-function checkBit(flags, _bit)
+function st_checkBit(flags, _bit)
     -- Проверяет, что переданные аргументы являются числами
     if type(flags) ~= "number" then error(Private.logicType .. " Error!!! Checkbit: 1-st argument is not a number!") end
     if type(_bit) ~= "number" then error(Private.logicType .. " Error!!! Checkbit: 2-nd argument is not a number!") end

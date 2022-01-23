@@ -10,8 +10,8 @@ function CallbackProcessing(queue)
     -- message(string.format("Callback processing %s are started", queue.callback))
     LOGS:update(string.format("Callback processing %s are started\n", queue.callback))
     -- sleep(10) --эмуляция продолжительного алгоритма обработки события
-    ReadData_W(queue.order)
-    ReadBitData_W(queue.order, queue.enum)
+    st_readData_W(queue.order)
+    st_readBitData_W(queue.order, queue.enum)
 
     LOGS:update(string.format("Callback processing %s are finished\n", queue.callback))
 

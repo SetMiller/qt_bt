@@ -4,6 +4,11 @@
 
 function PossLotsCalc()     end
 
+--
+--
+--
+
+
 function PossLotsCalc(possPrices, Sec, GO, risk, depoLimit)
 
     local delta = TRADE_TYPE == 'long' and possPrices.OpenStopPrice - possPrices.CloseStopPrice or possPrices.CloseStopPrice - possPrices.OpenStopPrice 

@@ -4,6 +4,10 @@
 function st_IsLongPattern_A() end
 function st_IsLongPattern_B() end
 
+--
+--
+--
+
 function st_IsLongPattern_A(candlesArr)
     local candle_A = candlesArr[1]
 

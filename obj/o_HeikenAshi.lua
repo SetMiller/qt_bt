@@ -18,13 +18,13 @@ function HeikenAshi:new()
                 Private.HAcandleArr[i].high     = tonumber(string.format("%.0f", candleArr[i].high ))
                 Private.HAcandleArr[i].low      = tonumber(string.format("%.0f", candleArr[i].low ))
                 Private.HAcandleArr[i].close    = tonumber(string.format("%.0f", candleArr[i].close ))
-                Private.HAcandleArr[i].datetime = DeepCopy(candleArr[i].datetime)
+                Private.HAcandleArr[i].datetime = st_deepCopy(candleArr[i].datetime)
             else
                 Private.HAcandleArr[i].open     = tonumber(string.format("%.0f", ( Private.HAcandleArr[i + 1].open + Private.HAcandleArr[i + 1].close ) / 2 ))
                 Private.HAcandleArr[i].close    = tonumber(string.format("%.0f", ( candleArr[i].open + candleArr[i].high + candleArr[i].low + candleArr[i].close ) / 4 ))
                 Private.HAcandleArr[i].high     = tonumber(string.format("%.0f", math.max( candleArr[i].high, Private.HAcandleArr[i].open, Private.HAcandleArr[i].close ) ))
                 Private.HAcandleArr[i].low      = tonumber(string.format("%.0f", math.min( candleArr[i].low, Private.HAcandleArr[i].open, Private.HAcandleArr[i].close ) ))
-                Private.HAcandleArr[i].datetime = DeepCopy(candleArr[i].datetime)
+                Private.HAcandleArr[i].datetime = st_deepCopy(candleArr[i].datetime)
             end
         end
 

@@ -27,7 +27,7 @@ function ChartData:new(arrLenght)
             Private.candlesArr[counter].high     = ds:H(index - Private.offset)
             Private.candlesArr[counter].low      = ds:L(index - Private.offset)
             Private.candlesArr[counter].close    = ds:C(index - Private.offset)
-            Private.candlesArr[counter].datetime = DeepCopy(ds:T(index - Private.offset))
+            Private.candlesArr[counter].datetime = st_deepCopy(ds:T(index - Private.offset))
 
         else
 
@@ -37,7 +37,7 @@ function ChartData:new(arrLenght)
                 Private.candlesArr[counter].high     = ds:H(i)
                 Private.candlesArr[counter].low      = ds:L(i)
                 Private.candlesArr[counter].close    = ds:C(i)
-                Private.candlesArr[counter].datetime = DeepCopy(ds:T(i))
+                Private.candlesArr[counter].datetime = st_deepCopy(ds:T(i))
                 counter = counter + 1
             end
 

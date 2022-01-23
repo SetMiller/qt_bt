@@ -1,15 +1,16 @@
 dofile(getScriptPath().."\\user\\u_Options.lua")
-dofile(getScriptPath().."\\garbage.lua")
+dofile(getScriptPath().."\\stuff\\st_ReadData.lua")
 
 dofile(getScriptPath().."\\obj\\o_ChartData.lua")
 dofile(getScriptPath().."\\obj\\o_HeikenAshi.lua")
-dofile(getScriptPath().."\\s_init.lua")
-dofile(getScriptPath().."\\s_update.lua")
-dofile(getScriptPath().."\\s_ds.lua")
-dofile(getScriptPath().."\\s_cp.lua")
+dofile(getScriptPath().."\\Init\\i_Init.lua")
+dofile(getScriptPath().."\\Init\\i_ds.lua")
+
+dofile(getScriptPath().."\\Loop\\loop_Update.lua")
+dofile(getScriptPath().."\\Loop\\loop_cbp.lua")
 
 dofile(getScriptPath().."\\stuff\\st_QuikData.lua")
-dofile(getScriptPath().."\\state.lua")
+dofile(getScriptPath().."\\user\\u_State.lua")
 
 dofile(getScriptPath().."\\stuff\\st_Order.lua")
 
@@ -18,7 +19,7 @@ dofile(getScriptPath().."\\stuff\\st_Order.lua")
 -- Инициализация приложения
 --
 function OnInit()
-    s_init()
+    i_Init()
     
     -- message("init STATE_DATA.depoLimit =" .. STATE_DATA.depoLimit)
 

@@ -8,6 +8,10 @@ function getTotalNet()          end
 -- function getActiveStopOrders()  end
 function getRiskPerTrade()      end
 
+--
+--
+--
+
 function getDepoLimit(firmid, trdaccid, limitType, currcode)  
     
     local depoLimit, varMargin

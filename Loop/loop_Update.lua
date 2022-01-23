@@ -1,11 +1,13 @@
 dofile(getScriptPath().."\\obj\\o_ChartData.lua")
 dofile(getScriptPath().."\\obj\\o_HeikenAshi.lua")
+
 dofile(getScriptPath().."\\stuff\\st_Patterns.lua")
 dofile(getScriptPath().."\\stuff\\st_QuikData.lua")
 dofile(getScriptPath().."\\stuff\\st_GOcalc.lua")
 dofile(getScriptPath().."\\stuff\\st_PossLotsCalc.lua")
+
 dofile(getScriptPath().."\\user\\u_Options.lua")
-dofile(getScriptPath().."\\state.lua")
+dofile(getScriptPath().."\\user\\u_State.lua")
 --
 --
 --
@@ -55,8 +57,8 @@ function s_update()
         
         STATE_POSS.Lots = PossLotsCalc(STATE_POSS, STATE_DATA.futuresParam, STATE_KEYS.possGO, STATE_DATA.riskPerTrade, STATE_DATA.depoLimit)
         
-        -- message("OpenStop:" .. tostring(STATE_POSS.OpenStopPrice) .. "\nOpen:" .. tostring(STATE_POSS.OpenPrice) .. " \nCloseStop:" .. tostring(STATE_POSS.CloseStopPrice) .. " \nClose:" .. tostring(STATE_POSS.ClosePrice) .. " \npossGO:" .. tostring(STATE_KEYS.possGO))
-        -- message(tostring(STATE_POSS.Lots))
+        message("OpenStop:" .. tostring(STATE_POSS.OpenStopPrice) .. "\nOpen:" .. tostring(STATE_POSS.OpenPrice) .. " \nCloseStop:" .. tostring(STATE_POSS.CloseStopPrice) .. " \nClose:" .. tostring(STATE_POSS.ClosePrice) .. " \npossGO:" .. tostring(STATE_KEYS.possGO))
+        message(tostring(STATE_POSS.Lots))
     
     -- else
         

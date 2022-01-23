@@ -11,41 +11,6 @@ function st_updateTransId() end
 --
 --
 
--- function st_transId()
---     local initCount = '1000000'
---     local countCheck = 0
---     local newCount = 0
---     local fc = ''
---     local f = ''
-
---     -- проверяем наличие файла
---     fc = io.open(getScriptPath()..'\\logs\\randomCount.txt','r+')
---     countCheck = fc:read('*n')
-
---     if fc == nil or countCheck == nil or tonumber(countCheck) < 1000000 or tonumber(countCheck) > 9999999 then 
---         fc = io.open(getScriptPath()..'\\logs\\randomCount.txt','w') 
---         fc:write(initCount)
---         fc:flush()
---         fc:close()
---     else
---        fc:close()
---     end
-
---     -- читаем данные
---     f = io.open(getScriptPath()..'\\logs\\randomCount.txt','r+')
---     count = f:read('*n')
---     f:close()
-    
---     -- сохраняем новые данные
---     f = io.open(getScriptPath()..'\\logs\\randomCount.txt','w') 
---     newCount = count + 1
---     f:write(newCount)
---     f:flush()
---     f:close()
-    
---     return tostring( count )
--- end
-
 function st_transId()
     local initCount     = '1000000'
     local count         = 0
