@@ -72,18 +72,3 @@ function getRiskPerTrade(depoLimit, risk)
     return tonumber(string.format("%.2f", depoLimit * risk ))
 
 end
--- -- получаем количество активных стопов
--- function getActiveStopOrders()
---   -- local stopKeys = GV:getStopKeys()
---   -- local activeStopKeys = stopKeys.activeStops.allActiveStops
---   local stopOrdersNum = 0
-
---   -- for i = 0, getNumberOf("stop_orders") - 1 do 
---   --   for _, v in ipairs(activeStopKeys) do
---   --     if getItem("stop_orders", i).flags == v then
---   --       stopOrdersNum = stopOrdersNum + 1
---   --     end
---   --   end
---   -- end
---   -- Private:isSingleDataUpdate(Private.quikData, "activeStops", stopOrdersNum)
--- end

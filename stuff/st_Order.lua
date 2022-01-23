@@ -55,38 +55,31 @@ end
 
 
 
+--
+--  очистка активной заявки происходит по данным, которые скопировали при установке !!!
+--
+function clearStopOrders(order_num, trans_id)
 
-function clearStopOrders(stopType)
-    -- local stopTypes
-    -- local accData = GV:getAccountData()
-    -- if stopType == 'long' then
-    --    stopTypes = GV:getLongActiveStops()
-    -- elseif stopType == 'short' then
-    --    stopTypes = GV:getShortActiveStops()
-    -- else
-    --    stopTypes = GV:getAllActiveStops()
-    --    message('All stops are deleted')
-    -- end
+    local stateOrderNum     = order_num
+    local stateTransId      = trans_id
 
     for i = 0, getNumberOf("stop_orders") - 1 do  
-       for k, v in ipairs(stopTypes) do  
-          local orderNum = getItem("stop_orders", i).order_num
-          local account = getItem("stop_orders", i).account
-          -- message('' .. account)
-          if getItem("stop_orders", i).flags == v and account == accData.trdaccid then   
-             local transaction = {
-                ["TRANS_ID"] = Private:getTransId(Private.transIdStack),
-                ["ACTION"] = "KILL_STOP_ORDER",
-                ["SECCODE"] = Private.quikSetup.futures.SECCODE,                                        
-                ["CLASSCODE"] = Private.quikSetup.futures.CLASSCODE,
-                ["STOP_ORDER_KEY"] = tostring(orderNum),
-             }
-             resp = sendTransaction(transaction);
-             message(resp)
-          end
-       end
+        local order_num     = getItem("stop_orders", i).order_num
+        local account       = getItem("stop_orders", i).account
+        local trans_id      = getItem("stop_orders", i).trans_id
+
+        if order_num == stateOrderNum and trans_id == stateTransId and account == trdaccid then   
+            local transaction = {
+            ["TRANS_ID"] = tostring(stateTransId),
+            ["ACTION"] = "KILL_STOP_ORDER",
+            ["SECCODE"] = SEC_CODE,                                        
+            ["CLASSCODE"] = CLASS_CODE,
+            ["STOP_ORDER_KEY"] = tostring(stateOrderNum),
+            }
+            resp = sendTransaction(transaction);
+            message(resp)
+        end
     end
-    
  end
 
 

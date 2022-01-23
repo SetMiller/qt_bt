@@ -23,7 +23,9 @@ function OnInit()
     
     -- message("init STATE_DATA.depoLimit =" .. STATE_DATA.depoLimit)
 
-    
+    -- for k, v in pairs(STATE_ACTIVE_ONSTOP) do
+    --     message(STATE_ACTIVE_ONSTOP[k])
+    -- end
 
 end
 
@@ -64,33 +66,60 @@ function main()
 
     while STATE_KEYS.isRun do
         
-        sleep(100)
+        sleep(2)
         -- if counter > 30000 then is_run = false end
-        if #STATE_MAIN_QUEUE > 0 then 
-            LOGS:update("QUEUE size " .. tostring(#STATE_MAIN_QUEUE) .. '\n')
+        if #STATE_ONTRADE_QUEUE > 0 and #STATE_ONORDER_QUEUE == 0 and #STATE_ONSTOP_QUEUE == 0 then 
+            LOGS:update("ONTRADE_QUEUE size " .. tostring(#STATE_ONTRADE_QUEUE) .. '\n')
 
             -- message("QUEUE size " .. tostring(#MAIN_QUEUE))
-            CallbackProcessing(STATE_MAIN_QUEUE[1])
-
-
-            table.sremove(STATE_MAIN_QUEUE, 1)
-
-
-            LOGS:update("QUEUE size left " .. tostring(#STATE_MAIN_QUEUE) .. '\n', '\n')
             
-        else
+            OnTradeCallbackProcessing(STATE_ONTRADE_QUEUE[1])
 
-            if STATE_KEYS.update then
-                
-                loop_update() 
-                
-                STATE_KEYS.update = false
+
+            table.sremove(STATE_ONTRADE_QUEUE, 1)
+            LOGS:update("ONTRADE_QUEUE size left " .. tostring(#STATE_ONTRADE_QUEUE) .. '\n', '\n')
+            
+        elseif #STATE_ONORDER_QUEUE > 0 and #STATE_ONSTOP_QUEUE == 0 then
+            LOGS:update("ONORDER_QUEUE size " .. tostring(#STATE_ONORDER_QUEUE) .. '\n')
+
+            -- message("QUEUE size " .. tostring(#MAIN_QUEUE))
+            
+            OnOrderCallbackProcessing(STATE_ONORDER_QUEUE[1])
+
+            
+            table.sremove(STATE_ONORDER_QUEUE, 1)
+            LOGS:update("ONORDER_QUEUE size left " .. tostring(#STATE_ONORDER_QUEUE) .. '\n', '\n')
+        elseif #STATE_ONSTOP_QUEUE > 0 then
+            LOGS:update("ONSTOP_QUEUE size " .. tostring(#STATE_ONSTOP_QUEUE) .. '\n')
+
+            -- message("QUEUE size " .. tostring(#MAIN_QUEUE))
+            
+            OnStopCallbackProcessing(STATE_ONSTOP_QUEUE[1])
+
+            
+            table.sremove(STATE_ONSTOP_QUEUE, 1)
+            LOGS:update("ONSTOP_QUEUE size left " .. tostring(#STATE_ONSTOP_QUEUE) .. '\n', '\n')
+        end
+
+
+        if STATE_KEYS.update and not STATE_KEYS.callbackProcessing then
+            
+            loop_update() 
+            
+            STATE_KEYS.update = false
+        end
+
+        if STATE_KEYS.callbackProcessing then
+            STATE_COUNTER = STATE_COUNTER + 1
+            if STATE_COUNTER == 10000 then
+                message('STATE_COUNTER get 10000')
+                STATE_KEYS.isRun = false
             end
         end
 
+
         
         -- counter = counter + 1
-        -- message(tostring(STATE_DATA.depoLimit))
         collectgarbage()
         -- STATE_KEYS.isRun = false
     end
@@ -146,8 +175,10 @@ function OnTransReply()
 end
 
 function OnStopOrder(order)
-    table.sinsert(STATE_MAIN_QUEUE, {callback = "OnStopOrder", order = order, enum = enum_OnStopOrder})
-    message('OnStopOrder --------------------->')
+    OnQuikCallbackProcessing(order, STATE_ONSTOP_QUEUE, "OnStopOrder")
+
+    -- table.sinsert(STATE_ONSTOP_QUEUE, {callback = "OnStopOrder", order = order, enum = enum_OnStopOrder})
+    -- message('OnStopOrder --------------------->')
     
     
     -- message(ReadData(order) .. '\n' .. ReadBitData(order, enum_OnStopOrder))
@@ -157,7 +188,9 @@ function OnStopOrder(order)
 end
 
 function OnOrder(order)
-    table.sinsert(STATE_MAIN_QUEUE, {callback = "OnOrder", order = order, enum = enum_OnOrder})
+    OnQuikCallbackProcessing(order, STATE_ONORDER_QUEUE, "OnOrder")
+    
+    -- table.sinsert(STATE_ONORDER_QUEUE, {callback = "OnOrder", order = order, enum = enum_OnOrder})
     -- message('OnOrder --------------------->')
     
     -- message(ReadData(order) .. '\n' .. ReadBitData(order, enum_OnOrder))
@@ -166,7 +199,9 @@ function OnOrder(order)
 end
 
 function OnTrade(order)
-    table.sinsert(STATE_MAIN_QUEUE, {callback = "OnTrade", order = order, enum = enum_OnTrade})
+    OnQuikCallbackProcessing(order, STATE_ONTRADE_QUEUE, "OnTrade")
+
+    -- table.sinsert(STATE_ONTRADE_QUEUE, {callback = "OnTrade", order = order, enum = enum_OnTrade})
     -- message('**OnTrade --------------------->')
 
     -- message(ReadData(order) .. '\n' .. ReadBitData(order, enum_OnTrade))

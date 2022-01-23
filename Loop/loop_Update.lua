@@ -34,6 +34,10 @@ function loop_update()
     -- Определяем наличие паттерна TODO: если паттерна нет, то пропускаем
     if TRADE_TYPE == 'long' then  STATE_KEYS.isPatterns = is_LongPatterns(STATE_DATA.heikenAshiCandles) else STATE_KEYS.patterns = is_ShortPatterns(STATE_DATA.heikenAshiCandles) end
 
+    --FIXME:
+    STATE_KEYS.isPatterns = true
+
+
     -- Если паттерн есть, то считаем позицию и тд
     if STATE_KEYS.isPatterns then
 
@@ -66,17 +70,18 @@ function loop_update()
         -- message("OpenStop:" .. tostring(STATE_POSS.OpenStopPrice) .. "\nOpen:" .. tostring(STATE_POSS.OpenPrice) .. " \nCloseStop:" .. tostring(STATE_POSS.CloseStopPrice) .. " \nClose:" .. tostring(STATE_POSS.ClosePrice) .. " \npossGO:" .. tostring(STATE_KEYS.possGO))
         -- message(tostring(STATE_POSS.Lots))
     
+        STATE_ORDER.PossIN      = stopOrderOpenPoss(STATE_POSS.OpenStopPrice, STATE_POSS.OpenPrice, STATE_POSS.Lots, STATE_DATA.futuresParam.SEC_SCALE)
+        STATE_ORDER.PossOUT     = stopOrderClosePoss(STATE_POSS.CloseStopPrice, STATE_POSS.ClosePrice, STATE_POSS.Lots, STATE_DATA.futuresParam.SEC_SCALE)
+        local resp1 = sendTransaction(STATE_ORDER.PossIN)
+        -- local resp2 = sendTransaction(STATE_ORDER.PossOUT)
+        -- message(resp1)
     else
         
         message('pattern not found')
         
     end
 
-    -- STATE_ORDER.PossIN      = stopOrderOpenPoss(STATE_POSS.OpenStopPrice, STATE_POSS.OpenPrice, STATE_POSS.Lots, STATE_DATA.futuresParam.SEC_SCALE)
-    -- STATE_ORDER.PossOUT     = stopOrderClosePoss(STATE_POSS.CloseStopPrice, STATE_POSS.ClosePrice, STATE_POSS.Lots, STATE_DATA.futuresParam.SEC_SCALE)
 
-    -- local resp1 = sendTransaction(STATE_ORDER.PossIN)
-    -- message(resp1)
     -- local resp2 = sendTransaction(STATE_ORDER.PossOUT)
     -- message(resp2)
 
