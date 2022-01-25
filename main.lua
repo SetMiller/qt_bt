@@ -14,6 +14,8 @@ dofile(getScriptPath().."\\user\\u_State.lua")
 
 dofile(getScriptPath().."\\stuff\\st_Order.lua")
 
+dofile(getScriptPath().."\\test\\st_shortOrders_test.lua")
+
 
 --
 -- Инициализация приложения
@@ -26,7 +28,8 @@ function OnInit()
     -- for k, v in pairs(STATE_ACTIVE_ONSTOP) do
     --     message(STATE_ACTIVE_ONSTOP[k])
     -- end
-
+    OnQuikCallbackProcessing(SHORT_STOP_ACTIVE, STATE_ONSTOP_QUEUE)
+    OnQuikCallbackProcessing(SHORT_STOP_ACTIVATED, STATE_ONSTOP_QUEUE)
 end
 
 -- function OnParam(class_code, sec_code)
@@ -109,13 +112,13 @@ function main()
             STATE_KEYS.update = false
         end
 
-        if STATE_KEYS.callbackProcessing then
-            STATE_COUNTER = STATE_COUNTER + 1
-            if STATE_COUNTER == 10000 then
-                message('STATE_COUNTER get 10000')
-                STATE_KEYS.isRun = false
-            end
-        end
+        -- if STATE_KEYS.callbackProcessing then
+        --     STATE_COUNTER = STATE_COUNTER + 1
+        --     if STATE_COUNTER == 10000 then
+        --         message('STATE_COUNTER get 10000')
+        --         STATE_KEYS.isRun = false
+        --     end
+        -- end
 
 
         
@@ -148,26 +151,6 @@ end
 
 function OnFuturesLimitChange(fut_limit)
 
-    -- local depo = fut_limit.cbp_prev_limit + fut_limit.varmargin + fut_limit.accruedint 
-    
-    -- if STATE_DATA.depoLimit ~= depo then
-    --     STATE_DATA.depoLimit = depo
-    --     -- message("update depoLimit =" .. STATE_DATA.depoLimit)
-
-    --     STATE_DATA.totalNet = getTotalNet(trdaccid, SEC_CODE)
-    --     message("update totalNet =" .. STATE_DATA.totalNet)
-    -- end
-    
-
-
-
-    -- message("callback STATE_DATA.depoLimit =" .. STATE_DATA.depoLimit)
-    -- for k, v in pairs(fut_limit) do
-    --     message(k .. " =" .. v)
-    -- end
-
-    -- читаем первые данные в инит
-    -- далее коллбэком обновляем данные в глобале
 end
 
 function OnTransReply()
@@ -176,37 +159,14 @@ end
 
 function OnStopOrder(order)
     OnQuikCallbackProcessing(order, STATE_ONSTOP_QUEUE, "OnStopOrder")
-
-    -- table.sinsert(STATE_ONSTOP_QUEUE, {callback = "OnStopOrder", order = order, enum = enum_OnStopOrder})
-    -- message('OnStopOrder --------------------->')
-    
-    
-    -- message(ReadData(order) .. '\n' .. ReadBitData(order, enum_OnStopOrder))
-    
-    
-    -- message('<--------------------- OnStopOrder')
 end
 
 function OnOrder(order)
     OnQuikCallbackProcessing(order, STATE_ONORDER_QUEUE, "OnOrder")
-    
-    -- table.sinsert(STATE_ONORDER_QUEUE, {callback = "OnOrder", order = order, enum = enum_OnOrder})
-    -- message('OnOrder --------------------->')
-    
-    -- message(ReadData(order) .. '\n' .. ReadBitData(order, enum_OnOrder))
-    
-    -- message('<--------------------- OnOrder')
 end
 
 function OnTrade(order)
     OnQuikCallbackProcessing(order, STATE_ONTRADE_QUEUE, "OnTrade")
-
-    -- table.sinsert(STATE_ONTRADE_QUEUE, {callback = "OnTrade", order = order, enum = enum_OnTrade})
-    -- message('**OnTrade --------------------->')
-
-    -- message(ReadData(order) .. '\n' .. ReadBitData(order, enum_OnTrade))
-
-    -- message('<--------------------- OnTrade**')
 end
 
 

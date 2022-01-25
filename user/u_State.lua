@@ -29,14 +29,14 @@ STATE_ONSTOP_QUEUE = {}
 STATE_ONORDER_QUEUE = {}
 STATE_ONTRADE_QUEUE = {}
 
-STATE_ACTIVE_ONSTOP = {
-    ['order_num']   = 0,
-    ['trans_id']    = 0,
-    ['qty']         = 0,
+-- STATE_ACTIVE_ONSTOP = {
+--     ['order_num']   = 0,
+--     ['trans_id']    = 0,
+--     ['qty']         = 0,
     -- ['order_num']   = 1672385,
     -- ['trans_id']    = 1000183,
     -- ['qty']         = 2,
-}
+-- }
 
 STATE_ORDER = {
     ['PossIN']      = {},

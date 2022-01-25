@@ -20,6 +20,7 @@ function i_Init()
     CD      = ChartData:new(CANDLES_TO_CHECK)
     HA      = HeikenAshi:new()
     LOGS    = Logs:new(TRADE_TYPE)
+    -- PC      = PossConstructor:new(TRADE_TYPE)
 
     dataSource(CLASS_CODE, SEC_CODE, INTERVAL)
 

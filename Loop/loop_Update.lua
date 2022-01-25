@@ -24,7 +24,7 @@ function loop_update() end
 --
 
 function loop_update() 
-    STATE_DATA.totalNet             = getTotalNet(trdaccid, SEC_CODE)                               -- получаем данные о стопе
+    -- STATE_DATA.totalNet             = getTotalNet(trdaccid, SEC_CODE)                               -- получаем данные о стопе
     
     -- 1.1 старт программы (нет позиции, нет стопов)
     
@@ -46,9 +46,9 @@ function loop_update()
     -- if STATE_DATA.totalNet == 0 and STATE_ACTIVE_ONSTOP.trans_id == 0 and STATE_ACTIVE_ONSTOP.order_num == 0 then
         
     --     if STATE_ACTIVE_ONSTOP.qty == 0 then
-    --         st_newPossStops()
-    --         local resp = sendTransaction(STATE_ORDER.PossIN)
-    --         -- message(resp)
+            st_newPossStops()
+            -- local resp = sendTransaction(STATE_ORDER.PossIN)
+            -- message(resp)
     --         STATE_KEYS.callbackProcessing = true
     --     else
     --         --расчитать новые точки, но с старым объемом

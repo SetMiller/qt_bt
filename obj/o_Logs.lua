@@ -2,6 +2,10 @@ Logs = {}
 
 function Logs:new(t_type)
 
+    if t_type ~= 'long' and t_type ~= 'short' then 
+        error(("bad argument init: Logs:new(TRADE_TYPE) (TRADE_TYPE expected, got %s)"):format(type(t_type)), 2) 
+    end
+
     local Private = {
         ['f']   = '',
         ['path'] = '',
@@ -10,7 +14,7 @@ function Logs:new(t_type)
 
     function Private:init()
         local date = os.date("!*t",os.time())
-
+        
         Private.path = '\\logs\\'.. tostring(date.year) .. "." ..tostring(date.month) .. "." ..tostring(date.day) .. '_' .. t_type .. '.txt'
         
         Private.f = io.open(getScriptPath() .. Private.path,'r+')

@@ -53,7 +53,8 @@ function st_readData_W(data, enum)
             end
         end
     else
-        str = str + tostring(data)
+        str = str .. tostring(data)
+        LOGS:update(str)
     end
 
     
