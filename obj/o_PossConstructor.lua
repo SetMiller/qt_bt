@@ -7,6 +7,15 @@ function PossConstructor:new(t_type)
     end
 
     local Private = {}
+    Private.orderChain = {
+        ['OnStopActive']        = false,
+        ['OnStop.Activated']    = false,
+        ['OnOrder']             = false,
+        ['OnTrade']             = false,
+    }
+
+    -- если вся цепочка собрана, то задача выполнена, обновить информацию о позиции и сбросить
+    -- если новый стоп, то сбросить информацию об активном стопе
 
     Private.OnStop.Active = {
         ['order_num']   = '',

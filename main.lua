@@ -28,8 +28,8 @@ function OnInit()
     -- for k, v in pairs(STATE_ACTIVE_ONSTOP) do
     --     message(STATE_ACTIVE_ONSTOP[k])
     -- end
-    OnQuikCallbackProcessing(SHORT_STOP_ACTIVE, STATE_ONSTOP_QUEUE)
-    OnQuikCallbackProcessing(SHORT_STOP_ACTIVATED, STATE_ONSTOP_QUEUE)
+    -- OnQuikCallbackProcessing(SHORT_STOP_ACTIVE, STATE_ONSTOP_QUEUE)
+    -- OnQuikCallbackProcessing(SHORT_STOP_ACTIVATED, STATE_ONSTOP_QUEUE)
 end
 
 -- function OnParam(class_code, sec_code)
@@ -56,12 +56,10 @@ function main()
     --TODO: обернуть в функцию проверки правильности введенных данных из Options
     if TRADE_TYPE ~= 'long' and TRADE_TYPE ~= 'short' then error(("check TRADE_TYPE in user -> u_Options -> (must be 'long or short', got '%s')"):format(TRADE_TYPE), 2) end
 
-    
     -- local a = stopOrderOpenPoss(78697, 78797, 1, 1)
     -- local b = stopOrderOpenPoss(78797, 78897, 2)
 
     -- respa = sendTransaction(a)
-    -- message(tostring(respa))
     -- respb = sendTransaction(b)
     -- message(tostring(respb))
 
