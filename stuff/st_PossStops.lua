@@ -26,8 +26,12 @@ function st_moveStop()      end
 --FIXME: Добавить передачу объема, если он есть, то брать его в позу, если нет, то считать отдельно
 function st_newPossStops() 
 
+
+    --FIXME: достаточно запрашивать при выставлении первого стопа???
     STATE_DATA.depoLimit            = getDepoLimit(firmid, trdaccid, limitType, currcode)           -- получаем данные по ДЕПО
     STATE_DATA.riskPerTrade         = getRiskPerTrade(STATE_DATA.depoLimit, RISK_PER_TRADE)         -- расчитываем риск на 1 сделку в рублях
+    
+    --FIXME: достаточно 1 раз запросить данные???
     STATE_DATA.futuresParam         = getParamTable(CLASS_CODE, SEC_CODE, enum_FuturesParam)        -- получаем данные из таблицы параметров для фьючерса
     -- message("init riskPerTrade =" .. STATE_DATA.riskPerTrade)
     -- message("init totalNet =" .. STATE_DATA.totalNet)

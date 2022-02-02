@@ -7,7 +7,7 @@ dofile(getScriptPath().."\\init\\i_Init.lua")
 dofile(getScriptPath().."\\init\\i_ds.lua")
 
 dofile(getScriptPath().."\\loop\\loop_Update.lua")
-dofile(getScriptPath().."\\loop\\loop_cbp.lua")
+dofile(getScriptPath().."\\loop\\loop_OnCallbackFiltering.lua")
 
 dofile(getScriptPath().."\\stuff\\st_QuikData.lua")
 dofile(getScriptPath().."\\user\\u_State.lua")
@@ -73,7 +73,6 @@ function main()
             LOGS:update("ONTRADE_QUEUE size " .. tostring(#STATE_ONTRADE_QUEUE) .. '\n')
 
             -- message("QUEUE size " .. tostring(#MAIN_QUEUE))
-            
             OnTradeCallbackProcessing(STATE_ONTRADE_QUEUE[1])
 
 
@@ -91,6 +90,7 @@ function main()
             table.sremove(STATE_ONORDER_QUEUE, 1)
             LOGS:update("ONORDER_QUEUE size left " .. tostring(#STATE_ONORDER_QUEUE) .. '\n', '\n')
         elseif #STATE_ONSTOP_QUEUE > 0 then
+        -- else
             LOGS:update("ONSTOP_QUEUE size " .. tostring(#STATE_ONSTOP_QUEUE) .. '\n')
 
             -- message("QUEUE size " .. tostring(#MAIN_QUEUE))
@@ -130,14 +130,14 @@ end
 -- Функция обратного вызова для отслеживания восстановления соединения с сервером
 --
 function OnConnected()
-
+    message('Connected')
 end
 
 -- 
 -- Функция обратного вызова для отслеживания разрыва соединения с сервером
 --
 function OnDisconnected()
-
+    message('Disconnected')
 end
 
 -- 

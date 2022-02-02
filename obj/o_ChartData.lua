@@ -43,6 +43,10 @@ function ChartData:new(arrLenght)
 
         end
         
+
+        -- LOGS:update(SEC_CODE, '\n')
+        -- LOGS:update(" \nH:" .. tostring(Private.candlesArr[1].high) .. " \nL:" .. tostring(Private.candlesArr[1].low) .. " \nT:" .. tostring(Private.candlesArr[1].datetime.min))
+        -- LOGS:update(SEC_CODE, '\n')
         -- message(" \nH:" .. tostring(Private.candlesArr[1].high) .. " \nL:" .. tostring(Private.candlesArr[1].low) .. " \nT:" .. tostring(Private.candlesArr[1].datetime.min))
 
         -- table.sinsert(MAIN_QUEUE_ONPARAM, {callback = "OnParam", value = order})

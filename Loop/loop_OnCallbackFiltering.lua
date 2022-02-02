@@ -18,38 +18,43 @@ function OnQuikCallbackProcessing() end
 function OnStopCallbackProcessing(queue)
 
     LOGS:update(queue.callback, '\n')
+    -- LOGS:update(queue.order, '\n')
     st_readData_W(queue.order)
-
-
-
+    
+    
+    
 end
 
 function OnOrderCallbackProcessing(queue) 
-
-    -- st_readData_W(queue.order)
-
+    
+    LOGS:update(queue.callback, '\n')
+    st_readData_W(queue.order)
+    
 end
 
 function OnTradeCallbackProcessing(queue) 
-
-    -- st_readData_W(queue.order)
+    
+    LOGS:update(queue.callback, '\n')
+    st_readData_W(queue.order)
 
 end
 
 function OnQuikCallbackProcessing(order, queue, callbackType)
     
+    
     if order.account == trdaccid and order.firmid == firmid and order.sec_code == SEC_CODE then
 
+        -- LOGS:update(queue.callback, '\n')
         -- STATE_KEYS.callbackProcessing = true
-        if order.flags == 25 or order.flags == 29 then
-            table.sinsert(queue, {callback = "OnStopOrder active", order = order})
+        -- if order.flags == 25 or order.flags == 29 then
+    table.sinsert(queue, {callback = callbackType, order = order})
 
-        elseif order.flags == 24 or order.flags == 28 then
-            table.sinsert(queue, {callback = "OnStopOrder activated", order = order})
+        -- elseif order.flags == 24 or order.flags == 28 then
+        --     table.sinsert(queue, {callback = "OnStopOrder activated", order = order})
 
-        elseif order.flags == 1048600 and order.trans_id ~=0 or order.flags == 1048604 and order.trans_id ~=0 then
+        -- elseif order.flags == 1048600 and order.trans_id ~=0 or order.flags == 1048604 and order.trans_id ~=0 then
             
-        end
+        -- end
 
 
 
