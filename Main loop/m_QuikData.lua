@@ -4,7 +4,7 @@
 
 function getDepoLimit()         end
 function getParamTableData(obj) end
-function getTotalNet()          end
+-- function getTotalNet()          end
 -- function getActiveStopOrders()  end
 function getRiskPerTrade()      end
 
@@ -48,27 +48,27 @@ function getParamTable(class_code, sec_code, obj)
 end
 
 -- получаем данные по текущей позиции
-function getTotalNet(trdaccid, sec_code)
+-- function getTotalNet(trdaccid, sec_code)
 
-    local lotsInPos = 0
-    local numbOfPossitions = getNumberOf("futures_client_holding") - 1
+--     local lotsInPos = 0
+--     local numbOfPossitions = getNumberOf("futures_client_holding") - 1
 
 
-    if numbOfPossitions > -1 then
-        for i = 0, numbOfPossitions do
-            if trdaccid == getItem("futures_client_holding", i).trdaccid then
-                -- message(getItem("futures_client_holding", i).trdaccid) sleep(400)
-                if getItem("futures_client_holding", i).sec_code == sec_code then
-                    lotsInPos = getItem("futures_client_holding", i).totalnet
-                end
-            end
-        end
-    end
-    return lotsInPos
-end
+--     if numbOfPossitions > -1 then
+--         for i = 0, numbOfPossitions do
+--             if trdaccid == getItem("futures_client_holding", i).trdaccid then
+--                 -- message(getItem("futures_client_holding", i).trdaccid) sleep(400)
+--                 if getItem("futures_client_holding", i).sec_code == sec_code then
+--                     lotsInPos = getItem("futures_client_holding", i).totalnet
+--                 end
+--             end
+--         end
+--     end
+--     return lotsInPos
+-- end
 
 function getRiskPerTrade(depoLimit, risk) 
     
-    return tonumber(string.format("%.2f", depoLimit * risk ))
+    return tonumber(string.format("%.0f", depoLimit * risk ))
 
 end

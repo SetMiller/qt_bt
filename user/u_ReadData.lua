@@ -14,7 +14,7 @@ function st_checkBit() end
 --
 --
 
-function st_readData(data, enum)
+function st_readData(data)
     local data      = data
     local str       = ''
 
@@ -46,15 +46,15 @@ function st_readData_W(data, enum)
             if type(v) == 'table' then
                 -- str = str .. k .. " -> !!! table !!!;\n"
             else
-                str = tostring(k) .. ": " .. tostring(v) .. ';\n'
-                LOGS:update(str)
+                str = '\t' .. tostring(k) .. ": " .. tostring(v) .. ';\n'
+                LOGS:updateStringArr(str)
                 -- sleep(10)
                 
             end
         end
     else
         str = str .. tostring(data)
-        LOGS:update(str)
+        LOGS:updateStringArr(str)
     end
 
     
@@ -78,7 +78,7 @@ function st_readBitData_W(order, enum)
 
     for _, v in pairs(enum) do
         bit_str = v ..' bit =' .. tostring(st_checkBit(order.flags, v)) .. ';\n'
-        LOGS:update(bit_str)
+        LOGS:updateStringArr(bit_str)
     end
 
     return bit_str

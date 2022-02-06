@@ -2,34 +2,36 @@
 --
 --
 
-function st_transId() end
-function st_checkTransId() end
-function st_loadTransId() end
-function st_updateTransId() end
+function o_transId() end
+function o_checkTransId() end
+function o_loadTransId() end
+function o_updateTransId() end
 
 --
 --
 --
+function o_transId()
 
-function st_transId()
     local initCount     = '1000000'
     local count         = 0
     local newCount      = 0
 
     -- проверяем наличие файла
-    st_checkTransId(initCount)
+    o_checkTransId(initCount)
 
     -- читаем данные
-    count = st_loadTransId()
+    count = o_loadTransId()
 
     -- сохраняем новые данные
-    st_updateTransId(count)
-    
+    o_updateTransId(count)
     return count
+    
 end
+--
+--
+--
+function o_checkTransId(initCount)
 
-
-function st_checkTransId(initCount)
     local f             = ''
     local countCheck    = ''
     local initCount     = initCount
@@ -43,12 +45,15 @@ function st_checkTransId(initCount)
         f:flush()
         f:close()
     else
-    f:close()
+        f:close()
     end
 
 end
+--
+--
+--
+function o_loadTransId() 
 
-function st_loadTransId() 
     local f         = ''
     local count     = ''
 
@@ -57,9 +62,13 @@ function st_loadTransId()
     f:close()
 
     return count
-end
 
-function st_updateTransId(count)
+end
+--
+--
+--
+function o_updateTransId(count)
+    
     local f         = ''
     local count     = count
     local newCount  = ''

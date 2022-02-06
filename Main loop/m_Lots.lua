@@ -2,14 +2,14 @@
 --
 --
 
-function PossLotsCalc()     end
+function Lots()     end
 
 --
 --
 --
 
 
-function PossLotsCalc(possPrices, Sec, GO, risk, depoLimit)
+function Lots(possPrices, Sec, GO, risk, depoLimit)
 
     local delta = TRADE_TYPE == 'long' and possPrices.OpenStopPrice - possPrices.CloseStopPrice or possPrices.CloseStopPrice - possPrices.OpenStopPrice 
     local oneStopPrice = tonumber(string.format("%.2f", delta / Sec.SEC_PRICE_STEP * Sec.STEPPRICE ))

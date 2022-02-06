@@ -15,7 +15,7 @@ function Logs:new(t_type)
     function Private:init()
         local date = os.date("!*t",os.time())
         
-        Private.path = '\\logs\\'.. tostring(date.year) .. "." ..tostring(date.month) .. "." ..tostring(date.day) .. '_' .. t_type .. '.txt'
+        Private.path = '\\Logs\\'.. tostring(date.year) .. "." ..tostring(date.month) .. "." ..tostring(date.day) .. '_' .. t_type .. '.txt'
         
         Private.f = io.open(getScriptPath() .. Private.path,'r+')
         
@@ -26,6 +26,7 @@ function Logs:new(t_type)
         else
             Private.f = io.open(getScriptPath() .. Private.path,'a')
         end
+        Private.f:write('\n')
         Private.f:write(Private.start)
         Private.f:write('\n')
     end
@@ -34,7 +35,7 @@ function Logs:new(t_type)
 
     local Public = {}
 
-    function Public:update(...) 
+    function Public:updateStringArr(...) 
 
         local arg = table.pack(...)
         
