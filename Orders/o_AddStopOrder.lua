@@ -1,12 +1,12 @@
 --
 --
 --
-function stopOrderOpenPoss()    end
-function stopOrderClosePoss()   end
+function o_stopOrderOpenPoss()    end
+function o_stopOrderClosePoss()   end
 --
 --
 --
-function stopOrderOpenPoss(StopPrice, Price, Lots, SecScale, Trans_id)
+function o_stopOrderOpenPoss(StopPrice, Price, Lots, SecScale, Trans_id)
     local stopOrder         = {}
     local priceSecScale     = '%.' .. tonumber(string.format('%.0f', SecScale)) .. 'f'
 
@@ -27,7 +27,7 @@ function stopOrderOpenPoss(StopPrice, Price, Lots, SecScale, Trans_id)
     return stopOrder
 end
 
-function stopOrderClosePoss(StopPrice, Price, Lots, SecScale, Trans_id)
+function o_stopOrderClosePoss(StopPrice, Price, Lots, SecScale, Trans_id)
     local stopOrder         = {}
     local priceSecScale     = '%.' .. tonumber(string.format('%.0f', SecScale)) .. 'f'
 
@@ -38,8 +38,9 @@ function stopOrderClosePoss(StopPrice, Price, Lots, SecScale, Trans_id)
         ["CLASSCODE"] = CLASS_CODE,                                          
         ["SECCODE"] = SEC_CODE,                                        
         ["OPERATION"] = TRADE_TYPE == 'long' and 'S' or 'B',                                      
-        ["QUANTITY"] = TRADE_TYPE == 'long' and tostring(Lots) or tostring(Lots * (-1)),  
-        ["CLIENT_CODE"] = TRADE_TYPE .. ' open',                              
+        -- ["QUANTITY"] = TRADE_TYPE == 'long' and tostring(Lots) or tostring(Lots * (-1)),  
+        ["QUANTITY"] = tostring(Lots),  
+        ["CLIENT_CODE"] = TRADE_TYPE .. ' close',                              
         ["STOPPRICE"] = tostring(tonumber(string.format(priceSecScale, StopPrice))),                                 
         ["PRICE"] = tostring(tonumber(string.format(priceSecScale, Price))),                                        
         ["EXPIRY_DATE"] = 'GTC',

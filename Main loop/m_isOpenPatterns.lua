@@ -3,6 +3,7 @@
 --
 function m_IsLongPattern_A() end
 function m_IsLongPattern_B() end
+function m_IsLongPattern_C() end
 
 --
 --
@@ -38,13 +39,32 @@ function m_IsLongPattern_B(candlesArr)
     end
 end
 
-function is_LongPatterns(arr)
+function m_IsLongPattern_C(candlesArr, last_price) 
 
-    local arr = arr
-    local answer_A = m_IsLongPattern_A(arr)
-    local answer_B = m_IsLongPattern_B(arr)
+    local candle_A  = candlesArr[1]
+    local last      = last_price
 
-    if answer_A == true or answer_B == true then
+    if candle_A.high < last_price then
+
+        return false
+
+    else
+
+        return true
+
+    end
+
+end
+
+function is_LongPatterns(arr, last_price)
+
+    local arr           = arr
+    local last_price    = tonumber(last_price)
+    local answer_A      = m_IsLongPattern_A(arr)
+    local answer_B      = m_IsLongPattern_B(arr)
+    local answer_C      = m_IsLongPattern_C(arr, last_price)
+
+    if answer_A == true and answer_C or answer_B == true and answer_C then
         -- message('Long pattern found = true')
         return true
 

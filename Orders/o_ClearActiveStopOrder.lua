@@ -1,11 +1,11 @@
 --
 --
 --
-function clearStopOrder() end
+function o_clearStopOrder() end
 --
 --
 --
-function clearStopOrder(orderNum, transId, sec_code, class_code)
+function o_clearStopOrder(orderNum, transId, sec_code, class_code)
 
     local userOrderNum      = orderNum
     local userTransId       = transId
@@ -16,7 +16,7 @@ function clearStopOrder(orderNum, transId, sec_code, class_code)
 
         local order_num     = getItem("stop_orders", i).order_num
         local trans_id      = getItem("stop_orders", i).trans_id
-        
+            
         if order_num == userOrderNum and trans_id == userTransId then 
 
             local transaction = {

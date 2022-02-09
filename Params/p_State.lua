@@ -1,13 +1,16 @@
-STATE_ONSTOP_QUEUE = {}
-STATE_ONORDER_QUEUE = {}
-STATE_ONTRADE_QUEUE = {}
+STATE_QUEUE = {}
+-- STATE_ONSTOP_QUEUE = {}
+-- STATE_ONORDER_QUEUE = {}
+-- STATE_ONTRADE_QUEUE = {}
+-- STATE_ONFUTURESLIMITCHANGE_QUEUE = {}
 
 STATE_KEYS = {
     ['isRun']                       = true,
     ['isPatterns']                  = false,
     ['mainLoopNeedToUpdate']        = false,
-    ['callbackLoopNeedToUpdate']    = false,
-    ['onConnectLoopNeedToUpdate']   = false,
+    ['callbackQueueProcessing']     = false,
+    ['orderActivateProcessing']     = false,
+    ['stopButtonPressed']           = false,
 }
 
 STATE_DATA = {
@@ -30,6 +33,7 @@ STATE_FUTURESPARAM = {
     ['SEC_SCALE']       = '',       -- точность цены
     ['BUYDEPO']         = '',       -- гарантийное обеспечение покупателя
     ['SELLDEPO']        = '',       -- гарантийное обеспечение продавца
+    ['LAST']        = '',           -- цена последней сделки
 }
 
 STATE_INIT_CHECK = {
@@ -40,14 +44,31 @@ STATE_INIT_CHECK = {
 }
 
 STATE_POSS = {
-    ['OpenStopPrice']       = '',       
-    ['OpenPrice']           = '',       
-    ['CloseStopPrice']      = '',      
-    ['ClosePrice']          = '',       
-    ['Lots']                = '',            
+    ['OpenStopPrice']   = '',       
+    ['OpenPrice']       = '',       
+    ['CloseStopPrice']  = '',      
+    ['ClosePrice']      = '',       
+    ['Lots']            = '',            
 }
 
 STATE_ORDER = {
-    ['OpenPoss']      = {},
-    ['ClosePoss']     = {},
+    ['OpenPoss']    = {},
+    ['ClosePoss']   = {},
+}
+
+STATE_ORDER_BUFFER = {
+    ['OnStop']      = {
+        -- ['order_num']   = '',
+        -- ['trans_id']    = '',
+        -- ['qty']         = '',
+        -- ['filled_qty']  = '',
+        ['linkedorder'] = 0,
+    },
+    ['OnOrder']     = {
+        -- ['order_num']   = '',
+        -- ['trans_id']    = '',
+        -- ['qty']         = '',
+        -- ['filled_qty']  = '',
+        ['linkedorder'] = 0,
+    },
 }

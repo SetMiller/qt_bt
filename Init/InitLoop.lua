@@ -1,6 +1,6 @@
 
 
-function initLoop()
+function InitLoop()
     
     check_DSInterval(INTERVAL)
     check_TradeAccount(firmid, trdaccid)
@@ -13,14 +13,19 @@ function initLoop()
     
 
     if STATE_KEYS.isRun then
-
-        dataSource(CLASS_CODE, SEC_CODE, INTERVAL)
-
+        
         PDK     = PossDataKeeper:new(TRADE_TYPE)
         LOGS    = Logs:new(TRADE_TYPE)
-
+        
         CD      = ChartData:new(CANDLES_TO_CHECK)
         HA      = HeikenAshi:new()
+
+        -- OnStopObj  = OnStopObj:new()
+        -- On_Order = OnOrder:new()
+        
+        dataSource(CLASS_CODE, SEC_CODE, INTERVAL)
+
+        -- AC      = AwaitCounter:new(1000)
 
         if STATE_INIT_CHECK.RISK_PER_TRADE then
             STATE_KEYS.isRun = false

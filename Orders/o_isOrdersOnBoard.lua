@@ -1,12 +1,12 @@
 --
 --
 --
-function isActiveStopOrderOnBoard() end
-function isActiveOrderOnBoard()     end
+function o_isActiveStopOrderOnBoard() end
+function o_isActiveOrderOnBoard()     end
 --
 --
 --
-function isActiveStopOrderOnBoard(orderNum, transId, t_type, p_type) 
+function o_isActiveStopOrderOnBoard(orderNum, transId, t_type, p_type) 
     
     if t_type == nil then error(("bad argument\n|| Orders\\o_isOrdersOnBoard.lua -> isActiveStopOrderOnBoard -> t_type ||\n('long or short' string expected, got -> '%s')"):format(t_type), 2) end
     if p_type == nil then error(("bad argument\n|| Orders\\o_isOrdersOnBoard.lua -> isActiveStopOrderOnBoard -> p_type ||\n('open or close' string expected, got -> '%s')"):format(p_type), 2) end
@@ -53,7 +53,7 @@ end
 --
 --
 --
-function isActiveOrderOnBoard(orderNum, transId, t_type)  
+function o_isActiveOrderOnBoard(orderNum, transId, t_type)  
     
     if t_type == nil then error(("bad argument\n|| Orders\\o_isOrdersOnBoard.lua -> isActiveOrderOnBoard -> t_type ||\n('long or short' expected, got -> '%s')"):format(t_type), 2) end
 

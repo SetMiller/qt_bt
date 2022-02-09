@@ -1,11 +1,11 @@
 --
 --
 --
-function isOutsideCandlePattern()  end
+function m_isOutsideCandlePattern()  end
 --
 --
 --  паттерн - любая внешняя свечка
-function isOutsideCandlePattern(candleArr) 
+function m_isOutsideCandlePattern(candleArr) 
 
     local candle_A = candleArr[1]
     local candle_B = candleArr[2]
@@ -17,6 +17,7 @@ function isOutsideCandlePattern(candleArr)
     else
 
         return false
+        -- return true
 
     end
 end

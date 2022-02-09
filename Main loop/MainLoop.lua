@@ -2,6 +2,8 @@
 
 function mainLoop()
 
+    LOGS:updateStringArr('--mainLoop Start--', '\n')
+
     local p_type_open   = 'open' 
     local p_type_close  = 'close'
 
@@ -13,13 +15,16 @@ function mainLoop()
     STATE_DATA.heikenAshiCandles    = HA:update(STATE_DATA.chartCandles, STATE_DATA.futuresParam.SEC_SCALE)         -- получаем массив конвертированных в heikenAshi свечек
     
     -- STAGE 1 - если нет открытой позиции
-    if PDK.getTotalNet() == 0 then
+    -- if PDK.getTotalNet() == 0 then
+    if PDK:getPossValue() == 0 then
 
         -- STAGE 1.1 - если есть активный стоп на открытие позиции
-        if isActiveStopOrderOnBoard( PDK.getOpenOrderNum(), PDK.getOpenTransId(), TRADE_TYPE, p_type_open ) then
+        if o_isActiveStopOrderOnBoard( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), TRADE_TYPE, p_type_open ) then
             
-            clearStopOrder( PDK.getOpenOrderNum(), PDK.getOpenTransId(), SEC_CODE, CLASS_CODE )
-            -- clearActiveOrder(1953472407507440070, 13 )
+            o_clearStopOrder( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), SEC_CODE, CLASS_CODE )
+            LOGS:updateStringArr('  NO POSS clearStopOrder', '\n')
+            -- st_readData(PDK:debugAwait())
+
 
         -- STAGE 1.2 - если нет активного стопа на открытие позиции  
         else
@@ -29,7 +34,7 @@ function mainLoop()
             STATE_DATA.riskPerTrade         = getRiskPerTrade(STATE_DATA.depoLimit, RISK_PER_TRADE)         -- расчитываем риск на 1 сделку в рублях
 
             -- Определяем наличие паттерна TODO: если паттерна нет, то пропускаем
-            if TRADE_TYPE == 'long' then  STATE_KEYS.isPatterns = is_LongPatterns(STATE_DATA.heikenAshiCandles) else STATE_KEYS.isPatterns = is_ShortPatterns(STATE_DATA.heikenAshiCandles) end
+            if TRADE_TYPE == 'long' then  STATE_KEYS.isPatterns = is_LongPatterns(STATE_DATA.heikenAshiCandles, STATE_DATA.futuresParam.LAST) else STATE_KEYS.isPatterns = is_ShortPatterns(STATE_DATA.heikenAshiCandles, STATE_DATA.futuresParam.LAST) end
 
             --FIXME:
             STATE_KEYS.isPatterns = true
@@ -50,26 +55,44 @@ function mainLoop()
                     STATE_POSS.CloseStopPrice   = STATE_DATA.heikenAshiCandles[1].high + STATE_DATA.futuresParam.SEC_PRICE_STEP * SEC_PRICE_STEP_OFFSET
                     STATE_POSS.ClosePrice       = STATE_DATA.heikenAshiCandles[1].high + STATE_DATA.futuresParam.SEC_PRICE_STEP * PRICE_SLIPPAGE
                 end
-        
-                STATE_KEYS.possGO   = GOcalc(STATE_DATA.futuresParam, STATE_POSS.OpenStopPrice, TRADE_TYPE)
-                STATE_POSS.Lots     = Lots(STATE_POSS, STATE_DATA.futuresParam, STATE_KEYS.possGO, STATE_DATA.riskPerTrade, STATE_DATA.depoLimit)
-                
+
+                --FIXME:
+                -- STATE_KEYS.possGO   = GOcalc(STATE_DATA.futuresParam, STATE_POSS.OpenPrice, TRADE_TYPE)
+                -- STATE_POSS.Lots     = Lots(STATE_POSS, STATE_DATA.futuresParam, STATE_KEYS.possGO, STATE_DATA.riskPerTrade, STATE_DATA.depoLimit)
+                STATE_POSS.Lots     = 1
+                --FIXME:
+                if TRADE_TYPE == 'long' then
+                    STATE_POSS.OpenStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) + 5)
+                else
+                    STATE_POSS.OpenStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) - 5)
+                end
+                    
+
                 if STATE_POSS.Lots > 0 then
                     
                     -- формируем номер транзкции для стопа на открытие позиции и сохраняем его в объекте
-                    PDK:setAwaitOpenTransId(o_transId())
+                    -- PDK:setAwaitTransId(o_transId())
+                    PDK:creatRoundTransId()
 
                     -- формируем транзакцию
-                    STATE_ORDER.OpenPoss    = stopOrderOpenPoss(STATE_POSS.OpenStopPrice, STATE_POSS.OpenPrice, STATE_POSS.Lots, STATE_DATA.futuresParam.SEC_SCALE, PDK:getAwaitOpenTransId())
+                    STATE_ORDER.OpenPoss    = o_stopOrderOpenPoss(STATE_POSS.OpenStopPrice, STATE_POSS.OpenPrice, STATE_POSS.Lots, STATE_DATA.futuresParam.SEC_SCALE, PDK:getRoundTransId())
                    
                     -- ожидаемый объем по транзакции
-                    PDK:setAwaitTotalNet(STATE_POSS.Lots)
+                    PDK:setRoundTotalNet(STATE_POSS.Lots)
+                    -- PDK:setAwaitTotalNet(STATE_POSS.Lots)
+                    -- PDK:setAwaitPossType(p_type_open)
 
                     -- отправляем транзакцию
                     local respOpen = sendTransaction(STATE_ORDER.OpenPoss)
-                    message(respOpen)
+
                     -- st_readData(STATE_ORDER.OpenPoss)
-                    --FIXME: запускаем счетчик ожидания ответа???
+
+                    LOGS:updateStringArr('  OPEN POSS sendTransaction ', 'Lots = ', STATE_POSS.Lots , '\n')
+
+                    st_readData_W(PDK:getRoundObj())
+
+                    -- ожидаем обработки транзакции квиком
+                    -- onQuikCallbackProcessingStart() 
 
                 else
 
@@ -77,7 +100,7 @@ function mainLoop()
                     
                 end
             else
-                -- ничего не делаем
+
                 message(TRADE_TYPE .. ' NO pattern')
 
             end
@@ -86,24 +109,28 @@ function mainLoop()
         -- STAGE 2 - если есть открытая позиция
     else
         -- STAGE 2.1 - если есть активный стоп на закрытие позиции
-
-        if isActiveStopOrderOnBoard( PDK.getCloseOrderNum(), PDK.getCloseTransId(), TRADE_TYPE, p_type_close ) then
-            message('STAGE 2.1')
+        if o_isActiveStopOrderOnBoard( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), TRADE_TYPE, p_type_close ) then
+            -- message('STAGE 2.1')
             
-            if not isOutsideCandlePattern(STATE_DATA.heikenAshiCandles) then
-                message('STAGE 2.1.1')
+            if not m_isOutsideCandlePattern( STATE_DATA.heikenAshiCandles ) then
+                -- message('STAGE 2.1.1')
 
-                clearStopOrder(PDK.getCloseOrderNum(), PDK.getCloseTransId(), SEC_CODE, CLASS_CODE)
+                o_clearStopOrder( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), SEC_CODE, CLASS_CODE )
+                LOGS:updateStringArr('  POSS clearStopOrder', '\n')
+                -- st_readData(PDK:debugAwait())
+
+                -- ожидаем обработки транзакции квиком
+                -- onQuikCallbackProcessingStart() 
+
+            else
                 
-                -- else
-                
-                -- внешний день, ничего не делаем
+                message('outside candle')
                 
             end
             
         -- STAGE 2.2 - если нет активного стопа на закрытие позиции
         else
-            message('STAGE 2.2')
+            -- message('STAGE 2.2')
             
             if TRADE_TYPE == 'long' then
                 STATE_POSS.CloseStopPrice   = STATE_DATA.heikenAshiCandles[1].low - STATE_DATA.futuresParam.SEC_PRICE_STEP * SEC_PRICE_STEP_OFFSET
@@ -114,34 +141,44 @@ function mainLoop()
             end
 
             -- берем данные по объему открытой позиции
-            STATE_POSS.Lots = PDK.getTotalNet()
+            --TODO: проверить значение при шорте!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            STATE_POSS.Lots = PDK:getPossValue()
+            -- STATE_POSS.Lots = getFuturesHolding(firmid, trdaccid, SEC_CODE, 0).totalnet
+
+            --FIXME:
+            if TRADE_TYPE == 'long' then
+                STATE_POSS.CloseStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) - 5)
+            else
+                STATE_POSS.CloseStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) + 5)
+            end
+            
 
             -- формируем номер транзкции для стопа на открытие позиции и сохраняем его в объекте
-            PDK:setAwaitCloseTransId(o_transId())
+            PDK:creatRoundTransId()
 
             -- формируем транзакцию
-            STATE_ORDER.ClosePoss    = stopOrderClosePoss(STATE_POSS.CloseStopPrice, STATE_POSS.ClosePrice, STATE_POSS.Lots, STATE_DATA.futuresParam.SEC_SCALE, PDK:getAwaitCloseTransId())
+            STATE_ORDER.ClosePoss    = o_stopOrderClosePoss(STATE_POSS.CloseStopPrice, STATE_POSS.ClosePrice, STATE_POSS.Lots, STATE_DATA.futuresParam.SEC_SCALE, PDK:getRoundTransId())
            
+            -- ожидаемый объем по транзакции
+            -- PDK:setAwaitTotalNet(0)
+            -- PDK:setAwaitPossType(p_type_close)
+
             -- отправляем транзакцию
             local respOpen = sendTransaction(STATE_ORDER.ClosePoss)
-            message(respOpen)
+            -- message(respOpen)
+            LOGS:updateStringArr('  CLOSE POSS sendTransaction ', 'Lots = ', STATE_POSS.Lots , '\n')
             -- st_readData(STATE_ORDER.ClosePoss)
+            -- st_readData(PDK:debugAwait())
 
+            -- ожидаем обработки транзакции квиком
+            -- onQuikCallbackProcessingStart() 
 
-            --отправить стоп на закрытие позиции
-            
         end
         
     end
     
-    STATE_KEYS.mainLoopUpdate = false
-    
+    STATE_KEYS.mainLoopNeedToUpdate = false
+    LOGS:updateStringArr('--mainLoop End--', '\n')
 end
 
 
-
-
-
-
--- STATE_ORDER.ClosePoss     = stopOrderClosePoss(STATE_POSS.CloseStopPrice, STATE_POSS.ClosePrice, STATE_POSS.Lots, STATE_DATA.futuresParam.SEC_SCALE)
--- st_readData(STATE_ORDER.OpenPoss)

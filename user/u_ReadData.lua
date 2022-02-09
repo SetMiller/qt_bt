@@ -35,7 +35,7 @@ function st_readData(data)
     return str
 end
 
-function st_readData_W(data, enum)
+function st_readData_W(data)
     local data      = data
     local str       = ''
 

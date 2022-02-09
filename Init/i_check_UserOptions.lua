@@ -102,16 +102,16 @@ function check_SecCodeDaysToMatDate(sec_code, class_code)
 
     daysToMatDate = tonumber(getParamEx(class_code, sec_code, 'DAYS_TO_MAT_DATE').param_value)
 
-    if daysToMatDate < 10 then
+    if daysToMatDate > 2 and daysToMatDate < 10 then
 
         message('less than ' .. daysToMatDate .. ' days left until maturity!!!\nPlease, change SEC_CODE -> User\\u_UserOptions.lua')
-
+        return
     end
 
-    if daysToMatDate <= 1 then
+    if daysToMatDate <= 2 then
 
         error(("bad argument\n|| User\\u_UserOptions.lua -> SEC_CODE ||\n('daysToMatDate' > 1 expected, got -> '%s days left')"):format(daysToMatDate), 2)
-
+        return
     end
 
 end

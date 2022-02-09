@@ -1,11 +1,11 @@
 --
 --
 --
-function clearActiveOrder() end
+function o_clearActiveOrder() end
 --
 --
 --
-function clearActiveOrder(orderNum, transId, sec_code, class_code)
+function o_clearActiveOrder(orderNum, transId, sec_code, class_code)
 
     local userOrderNum      = orderNum
     local userTransId       = transId
