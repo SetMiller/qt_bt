@@ -88,7 +88,7 @@ function main()
 
         --STACK 3 --
         -- if STATE_KEYS.mainLoopNeedToUpdate and not STATE_KEYS.callbackLoopNeedToUpdate and not STATE_KEYS.onConnectLoopNeedToUpdate then
-        if STATE_KEYS.mainLoopNeedToUpdate and not STATE_KEYS.callbackLoopNeedToUpdate and not STATE_KEYS.orderActivateProcessing and not STATE_KEYS.stopButtonPressed then
+        if STATE_KEYS.mainLoopNeedToUpdate and not STATE_KEYS.callbackLoopNeedToUpdate and not STATE_KEYS.orderActivateProcessing and not STATE_KEYS.stopButtonPressed and not STATE_KEYS.callbackAwaiting then
             
             mainLoop() 
             
@@ -124,25 +124,18 @@ function OnStop()
     STATE_KEYS.stopButtonPressed = true
     
     local futLimitTotalnet = 0
-    local p_type = ''
 
     futLimitTotalnet = getFuturesHolding(firmid, trdaccid, SEC_CODE, 0).totalnet
 
-    if futLimitTotalnet == 0 then
-        p_type = 'open'
-    else
-        p_type = 'close'
-    end
-    
-    if o_isActiveStopOrderOnBoard( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), TRADE_TYPE, p_type ) then
-
+    if o_isActiveStopOrderOnBoard( PDK.getOnStopOrderNum(), PDK.getRoundTransId()) then
+        -- message('activestop')
         o_clearStopOrder( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), SEC_CODE, CLASS_CODE )
 
     end
 
     if futLimitTotalnet ~= 0 then
-        
-        o_marketClose(futLimitTotalnet, SEC_CODE, CLASS_CODE, trdaccid, STATE_DATA.futuresParam.PRICEMAX, STATE_DATA.futuresParam.PRICEMIN, PDK:creatRoundTransId())
+        PDK:creatRoundTransId()
+        o_marketClose(futLimitTotalnet, SEC_CODE, CLASS_CODE, trdaccid, STATE_DATA.futuresParam.LAST + 100, STATE_DATA.futuresParam.LAST - 100, PDK:getRoundTransId(), STATE_DATA.futuresParam.SEC_SCALE)
 
     end
 
@@ -150,19 +143,47 @@ function OnStop()
     LOGS:updateStringArr('--STOP BUTTON PUSHED--', '\n')  
 end
 
-function OnFuturesClientHolding(fut_limit)
-    callbackQueueProcessingOn("FutLimit")
-    table.sinsert(STATE_QUEUE, {callback = "futLimit", fut_limit = fut_limit})
+-- function OnFuturesClientHolding(fut_limit)
+--      -- отфильтровываем изменения по позиции по счету
+--      if fut_limit.trdaccid == trdaccid and fut_limit.firmid == firmid and fut_limit.sec_code == SEC_CODE then
+        
+--         -- if fut_limit.totalnet ~= STATE_FUTLIMIT then
 
-end
+--             -- STATE_FUTLIMIT = fut_limit.totalnet
+            
+--             table.sinsert(STATE_QUEUE, {callback = "futLimit", fut_limit = fut_limit, callbackType = 'FutLimit'})
+
+--         -- end
+
+--      end
+-- end
 
 
 function OnStopOrder(order)
-    callbackQueueProcessingOn("OnStopOrder") 
-    table.sinsert(STATE_QUEUE, {callback = 'order', order = order})
+    -- отфильтровываем заявки по счету
+    if order.account == trdaccid and order.firmid == firmid and order.sec_code == SEC_CODE then
+        STATE_KEYS.callbackQueueProcessing = true
+        table.sinsert(STATE_QUEUE, {callback = 'order', order = order, callbackType = 'OnStopOrder'})
+    
+    end   
 end
 
 function OnOrder(order)
-    callbackQueueProcessingOn("OnOrder")
-    table.sinsert(STATE_QUEUE, {callback = 'order', order = order})
+    -- отфильтровываем заявки по счету
+    if order.account == trdaccid and order.firmid == firmid and order.sec_code == SEC_CODE then
+        STATE_KEYS.callbackQueueProcessing = true
+        table.sinsert(STATE_QUEUE, {callback = 'order', order = order, callbackType = 'OnOrder'})
+    
+    end 
+end
+
+
+function OnTransReply(reply)
+
+    if reply.account == trdaccid and reply.firm_id == firmid and reply.sec_code == SEC_CODE then
+    
+
+
+    end 
+
 end

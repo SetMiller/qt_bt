@@ -5,7 +5,7 @@ function PossDataKeeper:new(t_type)
 
     local Private = {}
 
-    Private.tradeType = t_type
+    -- Private.tradeType = t_type
 
     Private.possValue = 0
 
@@ -17,7 +17,7 @@ function PossDataKeeper:new(t_type)
     Private.orderExecution = {
         ['OnStop']                  = false,
         ['OnOrder']                 = false,
-        ['OnFuturesClientHolding']  = false,
+        -- ['OnFuturesClientHolding']  = false,
         ['OnStopActivated']         = false,
     }
 
@@ -114,49 +114,76 @@ function PossDataKeeper:new(t_type)
         Private.round.trans_id  = 0
         Private.round.totalnet  = 0
     
+        Private.orderExecution.OnStopActivated          = false
         Private.orderExecution.OnStop                   = false
         Private.orderExecution.OnOrder                  = false
-        Private.orderExecution.OnFuturesClientHolding   = false
-        Private.orderExecution.OnStopActivated          = false
+        -- Private.orderExecution.OnFuturesClientHolding   = false
     
         Private.orderNum.OnStop  = 0
     end
 
-    function Public:possChangeSuccess()
+    function Public:possChangeSuccess(executed)
+        LOGS:updateStringArr('\n','is possChangeSuccess? executed by:', executed,'\n')
+        
         local isSuccess = true
-        local futLimitTotalnet = 0
+        -- local futLimitTotalnet = 0
 
+        LOGS:updateStringArr('OnStopActivated: ', tostring(Private.orderExecution.OnStopActivated),'\n')
+        LOGS:updateStringArr('OnStop: ', tostring(Private.orderExecution.OnStop),'\n')
+        LOGS:updateStringArr('OnOrder: ', tostring(Private.orderExecution.OnOrder),'\n')
+        
+        LOGS:updateStringArr('\n','is possChangeSuccess? for loop start isSuccess:', tostring(isSuccess),'\n')
         for k, v in pairs(Private.orderExecution) do
+            LOGS:updateStringArr('k:', tostring(k),', v:', tostring(v),'\n')
             if not v then
                 isSuccess = false
             end
         end
-
+        LOGS:updateStringArr('is possChangeSuccess? for loop end isSuccess:', tostring(isSuccess),'\n')
+        
         if isSuccess then
+            LOGS:updateStringArr('\n', 'is possChangeSuccess: ', 'Start processing','\n')
+            -- futLimitTotalnet = tonumber(getFuturesHolding(firmid, trdaccid, SEC_CODE, 0).totalnet)
+            
+            -- if TRADE_TYPE == 'short' and futLimitTotalnet < 0 then futLimitTotalnet = futLimitTotalnet * ( -1 ) end
+            
+            LOGS:updateStringArr('isSuccess: 1', '\n')
 
-            futLimitTotalnet = getFuturesHolding(firmid, trdaccid, SEC_CODE, 0).totalnet
-
-            if TRADE_TYPE == 'short' and futLimitTotalnet < 0 then futLimitTotalnet = futLimitTotalnet * ( -1 ) end
-
-            if futLimitTotalnet == Private.round.totalnet then
-
-                Private.possValue = futLimitTotalnet
+            -- LOGS:updateStringArr('futLimitTotalnet:', futLimitTotalnet, ' type: ', type(futLimitTotalnet), '\n')
+            LOGS:updateStringArr('Private.round.totalnet:', Private.round.totalnet, ' type: ', type(Private.round.totalnet), '\n')
+            -- LOGS:updateStringArr('futLimitTotalnet == tonumber(Private.round.totalnet):', tostring(futLimitTotalnet == tonumber(Private.round.totalnet)), '\n')
+            
+            -- if futLimitTotalnet == tonumber(Private.round.totalnet) then
+                LOGS:updateStringArr('isSuccess: 1.1', '\n')
+                
+                Private.possValue = Private.round.totalnet
                 PDK:clearRoundData()
-
+                
                 if Private.possValue ~= 0 then
+                    LOGS:updateStringArr('isSuccess: 1.1.1', '\n')
                     
                     STATE_KEYS.mainLoopNeedToUpdate = true
                 end
                 
+                STATE_QUEUE = {}
+                
                 STATE_KEYS.orderActivateProcessing = false
+                STATE_KEYS.callbackQueueProcessing = false  --FIXME:
                 LOGS:updateStringArr('\n','@@@@@@@@@@@@@@@@@@@@@@@','\n','ROUND SUCCESS, got possValue:', Private.possValue, '\n','@@@@@@@@@@@@@@@@@@@@@@@','\n','\n','\n')
-            else
-
-                LOGS:updateStringArr('possChangeSuccess() ERROR, got quik:', futLimitTotalnet, ' and your\'s: ', Private.possValue, '\n')
-                STATE_KEYS.isRun = false
-
-            end
-
+            -- else
+            --     LOGS:updateStringArr('isSuccess: 2', '\n')
+                
+            --     LOGS:updateStringArr('possChangeSuccess() ERROR, got quik:', futLimitTotalnet, ' and your\'s: ', Private.possValue, '\n')
+            --     STATE_KEYS.isRun = false
+                
+            -- end
+        else
+            
+            LOGS:updateStringArr('\n', 'is possChangeSuccess: ', 'NOOOO','\n')
+            LOGS:updateStringArr('OnStopActivated: ', tostring(Private.orderExecution.OnStopActivated),'\n')
+            LOGS:updateStringArr('OnStop: ', tostring(Private.orderExecution.OnStop),'\n')
+            LOGS:updateStringArr('OnOrder: ', tostring(Private.orderExecution.OnOrder),'\n')
+            -- LOGS:updateStringArr('OnFuturesClientHolding: ', tostring(Private.orderExecution.OnFuturesClientHolding),'\n','\n')
         end
 
     end

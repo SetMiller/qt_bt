@@ -4,8 +4,8 @@ function mainLoop()
 
     LOGS:updateStringArr('--mainLoop Start--', '\n')
 
-    local p_type_open   = 'open' 
-    local p_type_close  = 'close'
+    -- local p_type_open   = 'open' 
+    -- local p_type_close  = 'close'
 
     -- пока запрашиваю каждый раз, потому можно через OnParam
     STATE_DATA.futuresParam         = getParamTable(CLASS_CODE, SEC_CODE, STATE_FUTURESPARAM)
@@ -21,6 +21,7 @@ function mainLoop()
         -- STAGE 1.1 - если есть активный стоп на открытие позиции
         if o_isActiveStopOrderOnBoard( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), TRADE_TYPE, p_type_open ) then
             
+            STATE_KEYS.callbackAwaiting = true
             o_clearStopOrder( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), SEC_CODE, CLASS_CODE )
             LOGS:updateStringArr('  NO POSS clearStopOrder', '\n')
             -- st_readData(PDK:debugAwait())
@@ -62,9 +63,9 @@ function mainLoop()
                 STATE_POSS.Lots     = 1
                 --FIXME:
                 if TRADE_TYPE == 'long' then
-                    STATE_POSS.OpenStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) + 5)
+                    STATE_POSS.OpenStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) + 3)
                 else
-                    STATE_POSS.OpenStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) - 5)
+                    STATE_POSS.OpenStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) - 3)
                 end
                     
 
@@ -82,8 +83,10 @@ function mainLoop()
                     -- PDK:setAwaitTotalNet(STATE_POSS.Lots)
                     -- PDK:setAwaitPossType(p_type_open)
 
+                    STATE_KEYS.callbackAwaiting = true
                     -- отправляем транзакцию
                     local respOpen = sendTransaction(STATE_ORDER.OpenPoss)
+
 
                     -- st_readData(STATE_ORDER.OpenPoss)
 
@@ -114,7 +117,8 @@ function mainLoop()
             
             if not m_isOutsideCandlePattern( STATE_DATA.heikenAshiCandles ) then
                 -- message('STAGE 2.1.1')
-
+                
+                STATE_KEYS.callbackAwaiting = true
                 o_clearStopOrder( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), SEC_CODE, CLASS_CODE )
                 LOGS:updateStringArr('  POSS clearStopOrder', '\n')
                 -- st_readData(PDK:debugAwait())
@@ -147,9 +151,9 @@ function mainLoop()
 
             --FIXME:
             if TRADE_TYPE == 'long' then
-                STATE_POSS.CloseStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) - 5)
+                STATE_POSS.CloseStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) - 3)
             else
-                STATE_POSS.CloseStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) + 5)
+                STATE_POSS.CloseStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) + 3)
             end
             
 
@@ -163,6 +167,7 @@ function mainLoop()
             -- PDK:setAwaitTotalNet(0)
             -- PDK:setAwaitPossType(p_type_close)
 
+            STATE_KEYS.callbackAwaiting = true
             -- отправляем транзакцию
             local respOpen = sendTransaction(STATE_ORDER.ClosePoss)
             -- message(respOpen)

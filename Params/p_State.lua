@@ -11,6 +11,7 @@ STATE_KEYS = {
     ['callbackQueueProcessing']     = false,
     ['orderActivateProcessing']     = false,
     ['stopButtonPressed']           = false,
+    ['callbackAwaiting']            = false,
 }
 
 STATE_DATA = {
@@ -72,3 +73,5 @@ STATE_ORDER_BUFFER = {
         ['linkedorder'] = 0,
     },
 }
+
+STATE_FUTLIMIT = 0
