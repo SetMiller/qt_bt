@@ -67,7 +67,6 @@ function main()
     while STATE_KEYS.isRun do
         sleep(1)
         
-
         -- -- STACK 1 --
         -- if STATE_KEYS.onConnectLoopNeedToUpdate then
 
@@ -182,7 +181,8 @@ function OnTransReply(reply)
 
     if reply.account == trdaccid and reply.firm_id == firmid and reply.sec_code == SEC_CODE then
     
-
+        STATE_KEYS.callbackQueueProcessing = true
+        table.sinsert(STATE_QUEUE, {callback = 'reply', reply = reply, callbackType = 'OnTransReply'})
 
     end 
 

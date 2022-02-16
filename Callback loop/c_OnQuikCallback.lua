@@ -60,6 +60,16 @@ function callbackQueueProcessing(queue)
         -- return
     end
 
+    if queue.callback == 'reply' then
+
+        LOGS:updateStringArr('**callback queue OnTransReply processing Start**', '\n')
+        
+            transReplyCallback(queue.reply)
+            
+        LOGS:updateStringArr('**callback queue OnTransReply processing End**', '\n')
+
+    end
+
 
 end
 
@@ -111,7 +121,7 @@ function orderCallback(order)
                 
                 PDK:setOrderExecution('OnStop')
                 LOGS:updateStringArr('OnStop Active Success !!!', '\n')
-                
+                STATE_KEYS.callbackAwaiting = false --FIXME:
                 -- проверка цепочки
                 PDK:possChangeSuccess('OnStop')
             end
@@ -177,6 +187,13 @@ function orderCallback(order)
     end
 end
 
+
+function transReplyCallback(reply) 
+
+    LOGS:updateStringArr('reply status ---- > ', reply.status, '\n')
+    -- st_readData_W(reply)
+
+end
 
 
 -- function futLimitCallback(fut_limit)

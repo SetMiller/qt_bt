@@ -19,7 +19,7 @@ function mainLoop()
     if PDK:getPossValue() == 0 then
 
         -- STAGE 1.1 - если есть активный стоп на открытие позиции
-        if o_isActiveStopOrderOnBoard( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), TRADE_TYPE, p_type_open ) then
+        if o_isActiveStopOrderOnBoard( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), TRADE_TYPE ) then
             
             STATE_KEYS.callbackAwaiting = true
             o_clearStopOrder( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), SEC_CODE, CLASS_CODE )
@@ -38,7 +38,7 @@ function mainLoop()
             if TRADE_TYPE == 'long' then  STATE_KEYS.isPatterns = is_LongPatterns(STATE_DATA.heikenAshiCandles, STATE_DATA.futuresParam.LAST) else STATE_KEYS.isPatterns = is_ShortPatterns(STATE_DATA.heikenAshiCandles, STATE_DATA.futuresParam.LAST) end
 
             --FIXME:
-            STATE_KEYS.isPatterns = true
+            -- STATE_KEYS.isPatterns = true
 
             if STATE_KEYS.isPatterns then
 
@@ -58,15 +58,15 @@ function mainLoop()
                 end
 
                 --FIXME:
-                -- STATE_KEYS.possGO   = GOcalc(STATE_DATA.futuresParam, STATE_POSS.OpenPrice, TRADE_TYPE)
-                -- STATE_POSS.Lots     = Lots(STATE_POSS, STATE_DATA.futuresParam, STATE_KEYS.possGO, STATE_DATA.riskPerTrade, STATE_DATA.depoLimit)
-                STATE_POSS.Lots     = 1
+                STATE_KEYS.possGO   = GOcalc(STATE_DATA.futuresParam, STATE_POSS.OpenPrice, TRADE_TYPE)
+                STATE_POSS.Lots     = Lots(STATE_POSS, STATE_DATA.futuresParam, STATE_KEYS.possGO, STATE_DATA.riskPerTrade, STATE_DATA.depoLimit)
+                -- STATE_POSS.Lots     = 1
                 --FIXME:
-                if TRADE_TYPE == 'long' then
-                    STATE_POSS.OpenStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) + 3)
-                else
-                    STATE_POSS.OpenStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) - 3)
-                end
+                -- if TRADE_TYPE == 'long' then
+                --     STATE_POSS.OpenStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) + 3)
+                -- else
+                --     STATE_POSS.OpenStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) - 3)
+                -- end
                     
 
                 if STATE_POSS.Lots > 0 then
@@ -86,7 +86,7 @@ function mainLoop()
                     STATE_KEYS.callbackAwaiting = true
                     -- отправляем транзакцию
                     local respOpen = sendTransaction(STATE_ORDER.OpenPoss)
-
+                    message(respOpen)
 
                     -- st_readData(STATE_ORDER.OpenPoss)
 
@@ -150,11 +150,11 @@ function mainLoop()
             -- STATE_POSS.Lots = getFuturesHolding(firmid, trdaccid, SEC_CODE, 0).totalnet
 
             --FIXME:
-            if TRADE_TYPE == 'long' then
-                STATE_POSS.CloseStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) - 3)
-            else
-                STATE_POSS.CloseStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) + 3)
-            end
+            -- if TRADE_TYPE == 'long' then
+            --     STATE_POSS.CloseStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) - 3)
+            -- else
+            --     STATE_POSS.CloseStopPrice = tostring(tonumber(STATE_DATA.futuresParam.LAST) + 3)
+            -- end
             
 
             -- формируем номер транзкции для стопа на открытие позиции и сохраняем его в объекте
@@ -169,8 +169,8 @@ function mainLoop()
 
             STATE_KEYS.callbackAwaiting = true
             -- отправляем транзакцию
-            local respOpen = sendTransaction(STATE_ORDER.ClosePoss)
-            -- message(respOpen)
+            local respClose = sendTransaction(STATE_ORDER.ClosePoss)
+            message(respClose)
             LOGS:updateStringArr('  CLOSE POSS sendTransaction ', 'Lots = ', STATE_POSS.Lots , '\n')
             -- st_readData(STATE_ORDER.ClosePoss)
             -- st_readData(PDK:debugAwait())
