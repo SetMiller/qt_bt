@@ -41,7 +41,7 @@ STATE_INIT_CHECK = {
     ['DS']              = false,
     ['ACCOUNT']         = false,
     ['USER_OPTIONS']    = false,
-    ['RISK_PER_TRADE']  = false,    -- проверка соотношения риска за сделку и размера свечки ( стопа )
+    -- ['RISK_PER_TRADE']  = false,    -- проверка соотношения риска за сделку и размера свечки ( стопа )
 }
 
 STATE_POSS = {

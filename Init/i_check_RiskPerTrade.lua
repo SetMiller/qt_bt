@@ -5,10 +5,12 @@ function check_RiskPerTrade() end
 --
 --
 --
-function check_RiskPerTrade() 
+function check_RiskPerTrade(chartCandlesObj) 
     local deltaArr = {}
     local delta = 0
     local deltaInMoney = 0
+
+    local CD = chartCandlesObj
 
     local deltaOk = 0
     local deltaNo = 0
@@ -52,12 +54,21 @@ function check_RiskPerTrade()
         
         
     end
+
+    local toRead = {
+        'securities code:   ' .. SEC_CODE,
+        'risk per trade:    ' .. RISK_PER_TRADE * 100 .. '%',
+        'depo value:        ' .. STATE_DATA.depoLimit .. ' rub.',
+        'risk per trade:    ' .. STATE_DATA.riskPerTrade .. ' rub.',
+        'inside delta:      ' .. deltaOk .. ' candles ', 
+        'outside delta:     ' .. deltaNo .. ' candles ',
+    }
     
-    LOGS:updateStringArr('#### Risk Per Trade check ####', '\n')
-    st_readData_W({['SEC_CODE'] = SEC_CODE})
-    st_readData_W({['RISK_PER_TRADE'] = RISK_PER_TRADE * 100 .. '%'})
-    st_readData_W({['riskPerTrade'] = STATE_DATA.riskPerTrade .. ' rub.'})
-    st_readData_W({['deltaOk'] = deltaOk .. ' candles', ['deltaNo'] = deltaNo .. ' candles'})
-    LOGS:updateStringArr('##############################', '\n')
+    LOGS:updateStringArr('######## Risk Per Trade check ########', '\n')
+    st_readData_W(toRead)
+    st_readData(toRead)
+    LOGS:updateStringArr('######################################', '\n')
+
+
 
 end

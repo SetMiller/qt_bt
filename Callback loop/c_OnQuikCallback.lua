@@ -94,7 +94,7 @@ function orderCallback(order)
             
             LOGS:updateStringArr('25.29 onStopCallback ACTIVE ERROR, order.trans_id doesn\'t match. ')
             LOGS:updateStringArr('Await:', PDK:getRoundTransId() ,', but get order.trans_id:', order.trans_id, '\n')
-            STATE_KEYS.isRun = false
+            -- STATE_KEYS.isRun = false
             
         end
         -- PDK:setActiveStop( queue.order.trans_id,  queue.order.order_num, queue.order.qty ) 
@@ -114,6 +114,11 @@ function orderCallback(order)
             STATE_KEYS.orderActivateProcessing = true   --TODO:
 
             PDK:setOrderExecution('OnStopActivated')
+        else
+            LOGS:updateStringArr('OnStopActivated:', tostring(PDK:getOrderExecution('OnStopActivated')), ', ')
+            LOGS:updateStringArr('OnStop:', tostring(PDK:getOrderExecution('OnStop')), ', ')
+            LOGS:updateStringArr('order.trans_id:', tostring(order.trans_id), ', ')
+            LOGS:updateStringArr('PDK:getRoundTransId():', tostring(PDK:getRoundTransId()), '\n')
         end
 
         if PDK:getOrderExecution('OnStopActivated') and not PDK:getOrderExecution('OnStop') then
@@ -168,6 +173,11 @@ function orderCallback(order)
 
             -- заблокировать mainloop
             STATE_KEYS.orderActivateProcessing = true   --TODO:
+        else
+            LOGS:updateStringArr('OnStopActivated:', tostring(PDK:getOrderExecution('OnStopActivated')), ', ')
+            LOGS:updateStringArr('OnStop:', tostring(PDK:getOrderExecution('OnStop')), ', ')
+            LOGS:updateStringArr('order.trans_id:', tostring(order.trans_id), ', ')
+            LOGS:updateStringArr('PDK:getRoundTransId():', tostring(PDK:getRoundTransId()), '\n')
         end
         
         if PDK:getOrderExecution('OnStopActivated') and not PDK:getOrderExecution('OnOrder') then

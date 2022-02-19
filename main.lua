@@ -124,18 +124,21 @@ function OnStop()
     
     local futLimitTotalnet = 0
 
-    futLimitTotalnet = getFuturesHolding(firmid, trdaccid, SEC_CODE, 0).totalnet
-
-    if o_isActiveStopOrderOnBoard( PDK.getOnStopOrderNum(), PDK.getRoundTransId()) then
-        -- message('activestop')
-        o_clearStopOrder( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), SEC_CODE, CLASS_CODE )
-
-    end
-
-    if futLimitTotalnet ~= 0 then
-        PDK:creatRoundTransId()
-        o_marketClose(futLimitTotalnet, SEC_CODE, CLASS_CODE, trdaccid, STATE_DATA.futuresParam.LAST + 100, STATE_DATA.futuresParam.LAST - 100, PDK:getRoundTransId(), STATE_DATA.futuresParam.SEC_SCALE)
-
+    local status, futLimitTotalnet = pcall(function()
+        return getFuturesHolding(firmid, trdaccid, SEC_CODE, 0).totalnet
+    end)
+     
+    if not status then
+        message ('getFuturesHolding() Error!!! Server doesn\'t response! ')
+    else
+        if o_isActiveStopOrderOnBoard( PDK.getOnStopOrderNum(), PDK.getRoundTransId()) then
+            o_clearStopOrder( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), SEC_CODE, CLASS_CODE )
+        end
+    
+        if futLimitTotalnet ~= 0 then
+            PDK:creatRoundTransId()
+            o_marketClose(futLimitTotalnet, SEC_CODE, CLASS_CODE, trdaccid, STATE_DATA.futuresParam.LAST + 100, STATE_DATA.futuresParam.LAST - 100, PDK:getRoundTransId(), STATE_DATA.futuresParam.SEC_SCALE)
+        end
     end
 
     STATE_KEYS.isRun = false
@@ -177,13 +180,13 @@ function OnOrder(order)
 end
 
 
-function OnTransReply(reply)
+-- function OnTransReply(reply)
 
-    if reply.account == trdaccid and reply.firm_id == firmid and reply.sec_code == SEC_CODE then
+--     if reply.account == trdaccid and reply.firm_id == firmid and reply.sec_code == SEC_CODE then
     
-        STATE_KEYS.callbackQueueProcessing = true
-        table.sinsert(STATE_QUEUE, {callback = 'reply', reply = reply, callbackType = 'OnTransReply'})
+--         STATE_KEYS.callbackQueueProcessing = true
+--         table.sinsert(STATE_QUEUE, {callback = 'reply', reply = reply, callbackType = 'OnTransReply'})
 
-    end 
+--     end 
 
-end
+-- end

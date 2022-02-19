@@ -3,11 +3,10 @@ dofile(getScriptPath().."\\Params\\p_State.lua")
 
 function dataSource(class_code, sec_code, interval)
     LOGS:updateStringArr('\n', '@@ dataSource init Start @@', '\n')
-    st_readData_W(STATE_KEYS)
     -- if class_code ~= 'long' and TRADE_TYPE ~= 'short' then error(("check TRADE_TYPE in user -> u_Options -> (must be 'long or short', got '%s')"):format(TRADE_TYPE), 2) end
     -- if sec_code ~= 'long' and TRADE_TYPE ~= 'short' then error(("check TRADE_TYPE in user -> u_Options -> (must be 'long or short', got '%s')"):format(TRADE_TYPE), 2) end
     -- if interval ~= 'long' and TRADE_TYPE ~= 'short' then error(("check TRADE_TYPE in user -> u_Options -> (must be 'long or short', got '%s')"):format(TRADE_TYPE), 2) end
-
+    
     ds, Error = CreateDataSource(class_code, sec_code, interval)
     local t, tOld, index, hour
     index = ds:Size()
@@ -24,6 +23,7 @@ function dataSource(class_code, sec_code, interval)
     end
     
     STATE_KEYS.mainLoopNeedToUpdate = true
+    st_readData_W(STATE_KEYS)
     
     LOGS:updateStringArr('@@ dataSource init End @@', '\n')
     
@@ -37,11 +37,11 @@ function dataSource(class_code, sec_code, interval)
             LOGS:updateStringArr('\n', '@@ dataSource loop Start @@', '\n') 
             LOGS:updateStringArr(hour ,':' ,t , '\n')
             -- LOGS:updateStringArr(hour ,':' ,t , '\n')
-            st_readData_W(STATE_KEYS)
             tOld = t
-
+            
             STATE_KEYS.mainLoopNeedToUpdate = true     -- если новая свечка, то обновляем данные по свечкам
-
+            
+            st_readData_W(STATE_KEYS)
             LOGS:updateStringArr('@@ dataSource loop End @@', '\n')
         end
 

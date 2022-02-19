@@ -43,7 +43,11 @@ function PossDataKeeper:new(t_type)
     end
 
     function Public:setPossValue(value)
-        Private.possValue = value
+        if value < 0 then
+            Private.possValue = value * (-1)
+        else
+            Private.possValue = value
+        end
     end
 
     function Public:setOrderExecution(e_type)

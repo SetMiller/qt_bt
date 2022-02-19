@@ -19,13 +19,22 @@ function mainLoop()
     if PDK:getPossValue() == 0 then
 
         -- STAGE 1.1 - если есть активный стоп на открытие позиции
-        if o_isActiveStopOrderOnBoard( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), TRADE_TYPE ) then
-            
-            STATE_KEYS.callbackAwaiting = true
-            o_clearStopOrder( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), SEC_CODE, CLASS_CODE )
-            LOGS:updateStringArr('  NO POSS clearStopOrder', '\n')
-            -- st_readData(PDK:debugAwait())
-
+        if PDK.getRoundTransId() ~= 0 then
+            -- если стоп существует в квике, то чистим
+            if o_isActiveStopOrderOnBoard( PDK.getOnStopOrderNum(), PDK.getRoundTransId()) then
+                
+                STATE_KEYS.callbackAwaiting = true
+                o_clearStopOrder( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), SEC_CODE, CLASS_CODE )
+                LOGS:updateStringArr('  NO POSS clearStopOrder', '\n')
+                -- st_readData(PDK:debugAwait())
+            else
+                -- если произошла накладка и на момент проверки позиция исполнилась,
+                -- то необходимо почистить старые данные и обновить данные по позиции
+                LOGS:updateStringArr('STAGE 1.1 PDK.getRoundTransId() ~= 0, but no stop order on board', '\n')
+                PDK:setPossValue(PDK:getRoundTotalnet())
+                PDK:clearRoundData()
+                STATE_KEYS.mainLoopNeedToUpdate = true
+            end
 
         -- STAGE 1.2 - если нет активного стопа на открытие позиции  
         else
@@ -112,24 +121,34 @@ function mainLoop()
         -- STAGE 2 - если есть открытая позиция
     else
         -- STAGE 2.1 - если есть активный стоп на закрытие позиции
-        if o_isActiveStopOrderOnBoard( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), TRADE_TYPE, p_type_close ) then
-            -- message('STAGE 2.1')
-            
-            if not m_isOutsideCandlePattern( STATE_DATA.heikenAshiCandles ) then
-                -- message('STAGE 2.1.1')
+        if PDK.getRoundTransId() ~= 0 then
+            -- если стоп существует в квике, то чистим
+            if o_isActiveStopOrderOnBoard( PDK.getOnStopOrderNum(), PDK.getRoundTransId()) then
+                -- message('STAGE 2.1')
                 
-                STATE_KEYS.callbackAwaiting = true
-                o_clearStopOrder( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), SEC_CODE, CLASS_CODE )
-                LOGS:updateStringArr('  POSS clearStopOrder', '\n')
-                -- st_readData(PDK:debugAwait())
+                if not m_isOutsideCandlePattern( STATE_DATA.heikenAshiCandles ) then
+                    -- message('STAGE 2.1.1')
+                    
+                    STATE_KEYS.callbackAwaiting = true
+                    o_clearStopOrder( PDK.getOnStopOrderNum(), PDK.getRoundTransId(), SEC_CODE, CLASS_CODE )
+                    LOGS:updateStringArr('  POSS clearStopOrder', '\n')
+                    -- st_readData(PDK:debugAwait())
 
-                -- ожидаем обработки транзакции квиком
-                -- onQuikCallbackProcessingStart() 
+                    -- ожидаем обработки транзакции квиком
+                    -- onQuikCallbackProcessingStart() 
 
+                else
+                    
+                    message('outside candle')
+                    
+                end
             else
-                
-                message('outside candle')
-                
+                -- если произошла накладка и на момент проверки позиция исполнилась,
+                -- то необходимо почистить старые данные и обновить данные по позиции
+                LOGS:updateStringArr('STAGE 2.1 PDK.getRoundTransId() ~= 0, but no stop order on board', '\n')
+                PDK:setPossValue(PDK:getRoundTotalnet())
+                PDK:clearRoundData()
+                STATE_KEYS.mainLoopNeedToUpdate = true
             end
             
         -- STAGE 2.2 - если нет активного стопа на закрытие позиции
